@@ -646,3 +646,110 @@ th {
     transform: scale(1.1);
     box-shadow: 0 0 14px var(--primary-color);
 }
+/* ============================= */
+/*       Feedback Section        */
+/* ============================= */
+#feedbackSection {
+    margin-top: 20px;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--neon-glow);
+}
+
+#feedbackSection h2 {
+    color: var(--primary-color);
+    text-align: center;
+    text-shadow: 0 0 10px var(--primary-color);
+}
+
+#feedbackSection form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+#feedbackSection label {
+    color: var(--text-color);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between checkbox and label text */
+}
+
+#feedbackSection input[type="text"],
+#feedbackSection textarea {
+    padding: 10px;
+    border-radius: 8px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--accent-color);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#feedbackSection textarea {
+    resize: none;
+}
+
+#feedbackSection input[type="radio"],
+#feedbackSection input[type="checkbox"] {
+    margin-right: 5px;
+    accent-color: var(--accent-color);
+    position: relative;
+    top: 2px; /* Adjust alignment near the label text */
+}
+
+#feedbackSection button[type="submit"] {
+    padding: 10px 20px;
+    border-radius: 8px;
+    background: var(--accent-color);
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+#feedbackSection button[type="submit"]:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 14px var(--accent-color);
+}
+
+#feedbackMessage {
+    color: lime;
+    display: none;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+#feedbackList {
+    margin-top: 20px;
+    padding: 1rem;
+    background: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: var(--neon-glow);
+}
+
+#feedbackList h3 {
+    color: var(--primary-color);
+    text-align: center;
+    text-shadow: 0 0 10px var(--primary-color);
+}
+
+#feedbackHistory {
+    list-style-type: none;
+    padding: 0;
+    color: var(--text-color);
+    font-size: 0.9rem;
+}
+
+#feedbackHistory li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background: var(--modal-bg);
+    border-radius: 8px;
+    box-shadow: var(--neon-glow);
+}
