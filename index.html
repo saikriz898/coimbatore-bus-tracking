@@ -8,350 +8,8 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-/* ============================= */
-/*         Root Variables        */
-/* ============================= */
-:root {
-    --primary-color: #38bdf8;
-    --accent-color: #a855f7;
-    --bg-color: #12121a;
-    --text-color: #f3f4f6;
-    --card-bg: #1e1e2f;
-    --modal-bg: #23233a;
-    --neon-glow: 0 0 4px var(--primary-color), 0 0 8px var(--accent-color);
-    --transition-speed: 0.3s;
-    --font-family: 'Poppins', sans-serif;
-    --vibrant-gradient: linear-gradient(135deg, #38bdf8, #a855f7, #facc15);
-    --vibrant-hover: linear-gradient(135deg, #06b6d4, #9333ea);
-}
-
-/* ============================= */
-/*          Base Styles          */
-/* ============================= */
-body {
-    margin: 0;
-    font-family: var(--font-family);
-    background: var(--bg-color);
-    color: var(--text-color);
-    transition: background 0.4s ease, color 0.4s ease;
-    overflow-x: hidden;
-}
-
-h1, h2, h3 {
-    margin: 0;
-    color: var(--primary-color);
-}
-
-a {
-    text-decoration: none;
-    color: var(--primary-color);
-    transition: color var(--transition-speed);
-}
-a:hover {
-    color: var(--accent-color);
-}
-
-/* ============================= */
-/*         Navigation Bar        */
-/* ============================= */
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background: var(--card-bg);
-    border-radius: 14px;
-    box-shadow: var(--neon-glow);
-    margin-bottom: 1.5rem;
-}
-
-.nav-buttons {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.nav-buttons img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    cursor: pointer;
-    border: 2px solid var(--accent-color);
-    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
-}
-
-.nav-buttons img:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 10px var(--accent-color);
-}
-
-.nav-buttons button {
-    background: var(--vibrant-gradient);
-    color: #fff;
-    border: none;
-    padding: 10px 18px;
-    font-size: 15px;
-    border-radius: 10px;
-    cursor: pointer;
-    box-shadow: var(--neon-glow);
-    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
-}
-
-.nav-buttons button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 14px var(--accent-color);
-}
-
-/* ============================= */
-/*       Dropdown Content        */
-/* ============================= */
-.dropdown-content {
-    display: none;
-    position: absolute;
-    top: 70px;
-    right: 20px;
-    background: var(--modal-bg);
-    border-radius: 14px;
-    box-shadow: var(--neon-glow);
-    padding: 15px;
-    z-index: 1000;
-    width: 220px;
-    max-height: 300px;
-    overflow-y: auto;
-    animation: fadeIn var(--transition-speed) ease-in-out;
-}
-
-.dropdown-content.show {
-    display: block;
-}
-
-.dropdown-content img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-}
-
-.dropdown-content p {
-    margin: 0 0 10px;
-    font-size: 1rem;
-}
-
-.dropdown-content button {
-    background: #3b3b4f;
-    color: var(--text-color);
-    border: none;
-    padding: 8px 12px;
-    border-radius: 8px;
-    margin-bottom: 6px;
-    width: 100%;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: background var(--transition-speed);
-}
-
-.dropdown-content button:hover {
-    background: #515167;
-}
-
-/* ============================= */
-/*            Modal              */
-/* ============================= */
-.modal {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 999;
-    background: var(--modal-bg);
-    padding: 2rem;
-    border-radius: 14px;
-    box-shadow: var(--neon-glow);
-    width: 90%;
-    max-width: 600px;
-    max-height: 90vh;
-    overflow-y: auto;
-    transition: all var(--transition-speed);
-}
-
-.modal.show {
-    display: block;
-}
-
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: var(--primary-color);
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: var(--neon-glow);
-    transition: transform var(--transition-speed);
-}
-
-.close-btn:hover {
-    transform: rotate(90deg);
-}
-
-/* ============================= */
-/*        Forms & Inputs         */
-/* ============================= */
-input, select, textarea {
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid var(--accent-color);
-    background: #28283d;
-    color: var(--text-color);
-    box-shadow: var(--neon-glow);
-    width: 100%;
-    margin-bottom: 12px;
-    font-size: 1rem;
-    transition: all var(--transition-speed);
-}
-
-input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 10px var(--primary-color);
-}
-
-input[type="checkbox"] {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--accent-color);
-    border-radius: 4px;
-    outline: none;
-    cursor: pointer;
-    transition: background-color var(--transition-speed), transform var(--transition-speed);
-}
-
-input[type="checkbox"]:checked {
-    background-color: var(--accent-color);
-    border-color: var(--primary-color);
-    transform: scale(1.1);
-    position: relative;
-}
-
-input[type="checkbox"]:checked::after {
-    content: '✔';
-    color: var(--text-color);
-    font-size: 14px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    color: #fff;
-    background: var(--vibrant-gradient);
-    box-shadow: var(--neon-glow);
-    transition: background var(--transition-speed), transform var(--transition-speed);
-}
-
-button:hover {
-    background: var(--vibrant-hover);
-    transform: translateY(-2px);
-}
-
-/* ============================= */
-/*            Tables             */
-/* ============================= */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--card-bg);
-    color: var(--text-color);
-    box-shadow: var(--neon-glow);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: all var(--transition-speed);
-}
-
-th, td {
-    padding: 14px;
-    border-bottom: 1px solid #4b5563;
-    text-align: left;
-}
-
-th {
-    background-color: #2c2c3f;
-    color: var(--primary-color);
-}
-
-/* ============================= */
-/*       Filter Container        */
-/* ============================= */
-.filter-container {
-    background: var(--card-bg);
-    padding: 1rem;
-    border-radius: 12px;
-    box-shadow: var(--neon-glow);
-    margin: 1rem 0;
-}
-
-.setting-option {
-    margin-bottom: 1rem;
-}
-
-.setting-option label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 500;
-}
-
-/* ============================= */
-/*         Reset Button          */
-/* ============================= */
-.reset-btn {
-    background: var(--primary-color);
-    color: #fff;
-    font-weight: bold;
-    transition: transform var(--transition-speed);
-}
-
-.reset-btn:hover {
-    transform: scale(1.08);
-    background: #0ea5e9;
-}
-
-/* ============================= */
-/*           Animations          */
-/* ============================= */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-input[type="text"], input[type="email"], input[type="password"], input[type="tel"], select, textarea {
-    width: calc(100% - 24px); /* Adjust width to account for padding */
-    max-width: 100%; /* Ensure it doesn't exceed container width */
-    box-sizing: border-box; /* Include padding and border in width calculation */
-    display: block; /* Ensure each field is on a new line */
-    margin-bottom: 1rem; /* Add spacing between fields */
-}
-</style>
+    <link rel="stylesheet" href="styles.css"/>
+    <script src="script.js"></script>
 </head>
 <div>
 
@@ -437,9 +95,15 @@ input[type="text"], input[type="email"], input[type="password"], input[type="tel
     </div>
     <script>
         function startVoiceSearch() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (!isLoggedIn) {
+            alert('Please log in to use the voice search feature.');
+            return;
+            }
+
             if (!('webkitSpeechRecognition' in window)) {
-                alert('Voice search is not supported in this browser.');
-                return;
+            alert('Voice search is not supported in this browser.');
+            return;
             }
 
             const recognition = new webkitSpeechRecognition();
@@ -448,36 +112,127 @@ input[type="text"], input[type="email"], input[type="password"], input[type="tel
             recognition.maxAlternatives = 1;
 
             recognition.onstart = () => {
-                document.getElementById('voice-search-status').textContent = 'Listening...';
-                const utterance = new SpeechSynthesisUtterance('I am listening. Please say your destination.');
-                window.speechSynthesis.speak(utterance);
+            document.getElementById('voice-search-status').textContent = 'Listening...';
+            const utterance = new SpeechSynthesisUtterance('I am listening. Please say your destination.');
+            window.speechSynthesis.speak(utterance);
             };
 
             recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
-                document.getElementById('voice-search-status').textContent = `You said: "${transcript}"`;
-                const utterance = new SpeechSynthesisUtterance(`You said ${transcript}. Searching for buses.`);
-                window.speechSynthesis.speak(utterance);
-                filterByDestination(transcript);
+            const transcript = event.results[0][0].transcript;
+            document.getElementById('voice-search-status').textContent = `You said: "${transcript}"`;
+            const utterance = new SpeechSynthesisUtterance(`You said ${transcript}. Searching for buses.`);
+            window.speechSynthesis.speak(utterance);
+            filterByDestination(transcript);
             };
 
             recognition.onerror = (event) => {
-                document.getElementById('voice-search-status').textContent = 'Error occurred during voice recognition.';
-                const utterance = new SpeechSynthesisUtterance('An error occurred during voice recognition. Please try again.');
-                window.speechSynthesis.speak(utterance);
-                console.error('Voice recognition error:', event.error);
+            document.getElementById('voice-search-status').textContent = 'Error occurred during voice recognition.';
+            const utterance = new SpeechSynthesisUtterance('An error occurred during voice recognition. Please try again.');
+            window.speechSynthesis.speak(utterance);
+            console.error('Voice recognition error:', event.error);
             };
 
             recognition.onend = () => {
-                document.getElementById('voice-search-status').textContent = 'Voice search ended.';
-                const utterance = new SpeechSynthesisUtterance('Voice search has ended.');
-                window.speechSynthesis.speak(utterance);
+            document.getElementById('voice-search-status').textContent = 'Voice search ended.';
+            const utterance = new SpeechSynthesisUtterance('Voice search has ended.');
+            window.speechSynthesis.speak(utterance);
             };
 
             recognition.start();
         }
     </script>
 </div>
+<div id="dailyFeed" style="display: none; margin-top: 20px; padding: 1rem; background: var(--card-bg); border-radius: 10px; box-shadow: var(--neon-glow);">
+    <h2 style="color: var(--primary-color);">🌤️ Daily Feed & Weather</h2>
+    <p id="weatherInfo" style="color: var(--text-color);">Fetching weather information...</p>
+    <p id="dailyTips" style="color: var(--text-color); margin-top: 10px;">Loading tip of the day...</p>
+</div>
+<div id="feedbackSection" style="margin-top: 20px; padding: 1.5rem; background: var(--card-bg); border-radius: 12px; box-shadow: var(--neon-glow);"></div>
+    <h2 style="color: var(--primary-color); text-align: center; text-shadow: 0 0 10px var(--primary-color);">📝 Share Your Feedback</h2>
+    <form onsubmit="submitFeedback(event)" style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1rem;">
+        <input type="text" id="feedbackName" placeholder="Your Name" required style="width: 100%; padding: 12px; border-radius: 10px; background: #28283d; color: var(--text-color); border: 1px solid var(--accent-color); font-size: 1rem;" />
+        <textarea id="feedbackInput" placeholder="We value your feedback! Share your thoughts..." required style="width: 100%; height: 120px; padding: 12px; border-radius: 10px; background: #28283d; color: var(--text-color); border: 1px solid var(--accent-color); resize: none; font-size: 1rem;"></textarea>
+        <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+            <label style="color: var(--text-color); font-weight: bold; font-size: 1.1rem;">Rate your experience:</label>
+            <div style="display: flex; gap: 15px; align-items: center; justify-content: center;">
+                <input type="radio" id="rating1" name="rating" value="1" required>
+                <label for="rating1" style="color: var(--text-color); font-size: 1rem; cursor: pointer;">1</label>
+                <input type="radio" id="rating2" name="rating" value="2">
+                <label for="rating2" style="color: var(--text-color); font-size: 1rem; cursor: pointer;">2</label>
+                <input type="radio" id="rating3" name="rating" value="3">
+                <label for="rating3" style="color: var(--text-color); font-size: 1rem; cursor: pointer;">3</label>
+                <input type="radio" id="rating4" name="rating" value="4">
+                <label for="rating4" style="color: var(--text-color); font-size: 1rem; cursor: pointer;">4</label>
+                <input type="radio" id="rating5" name="rating" value="5">
+                <label for="rating5" style="color: var(--text-color); font-size: 1rem; cursor: pointer;">5</label>
+            </div>
+        </div>
+        <button type="submit" style="padding: 12px 25px; border-radius: 10px; background: var(--primary-color); color: #fff; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">Submit Feedback</button>
+    </form>
+    <p id="feedbackMessage" style="color: lime; display: none; margin-top: 15px; text-align: center; font-size: 1rem;">Thank you for your valuable feedback! 😊</p>
+    <div id="feedbackList" style="margin-top: 20px; padding: 1rem; background: var(--card-bg); border-radius: 10px; box-shadow: var(--neon-glow);">
+        <h3 style="color: var(--primary-color); text-align: center;">📋 Feedback History</h3>
+        <ul id="feedbackHistory" style="list-style-type: none; padding: 0; color: var(--text-color);">
+            <!-- Feedback history will be dynamically loaded here -->
+        </ul>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFeedbackHistory();
+        });
+    </script>
+</div>
+
+<script>
+    const feedbackKey = 'userFeedback';
+
+    function submitFeedback(event) {
+        event.preventDefault();
+        const feedbackName = document.getElementById('feedbackName').value.trim();
+        const feedbackInput = document.getElementById('feedbackInput').value.trim();
+        const rating = document.querySelector('input[name="rating"]:checked').value;
+        const feedbackMessage = document.getElementById('feedbackMessage');
+
+        const feedback = {
+            name: feedbackName,
+            text: feedbackInput,
+            rating: rating,
+            timestamp: new Date().toLocaleString()
+        };
+
+        const feedbackList = JSON.parse(localStorage.getItem(feedbackKey)) || [];
+        feedbackList.push(feedback);
+        localStorage.setItem(feedbackKey, JSON.stringify(feedbackList));
+
+        feedbackMessage.style.display = 'block';
+        document.getElementById('feedbackName').value = '';
+        document.getElementById('feedbackInput').value = '';
+        document.querySelector('input[name="rating"]:checked').checked = false;
+
+        setTimeout(() => {
+            feedbackMessage.style.display = 'none';
+        }, 3000);
+
+        loadFeedbackHistory();
+    }
+
+    function loadFeedbackHistory() {
+        const feedbackList = JSON.parse(localStorage.getItem(feedbackKey)) || [];
+        const feedbackHistory = document.getElementById('feedbackHistory');
+        feedbackHistory.innerHTML = '';
+
+        feedbackList.forEach(feedback => {
+            const li = document.createElement('li');
+            li.innerHTML = `<strong>${feedback.timestamp}</strong>: <em>${feedback.name}</em> said "${feedback.text}" (Rating: ${feedback.rating}/5)`;
+            feedbackHistory.appendChild(li);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadFeedbackHistory();
+    });
+</script>
+
 
 <div id="map" style="height: 500px; border: 2px solid #ccc; border-radius: 10px; margin-top: 10px;"></div>
 
@@ -1180,169 +935,311 @@ document.getElementById('voiceToggle').addEventListener('change', function () {
 });
 </script>
 <script>
-            const usersKey = 'registeredUsers';
 
-            function toggleLoginPasswordVisibility() {
-                const pwd = document.getElementById('loginPassword');
-                pwd.type = document.getElementById('showLoginPasswordToggle').checked ? 'text' : 'password';
-            }
+const usersKey = 'registeredUsers';
 
-            function toggleRegisterPasswordVisibility() {
-                const pwd = document.getElementById('registerPassword');
-                const confirm = document.getElementById('registerConfirmPassword');
-                const show = document.getElementById('showRegisterPasswordToggle').checked;
-                pwd.type = confirm.type = show ? 'text' : 'password';
-            }
+function toggleLoginPasswordVisibility() {
+    const pwd = document.getElementById('loginPassword');
+    pwd.type = document.getElementById('showLoginPasswordToggle').checked ? 'text' : 'password';
+}
 
-            function sendVerificationCode() {
-                const code = Math.floor(100000 + Math.random() * 900000).toString();
-                localStorage.setItem('verificationCode', code);
-                alert("Verification Code (simulated): " + code);
-            }
+function toggleRegisterPasswordVisibility() {
+    const pwd = document.getElementById('registerPassword');
+    const confirm = document.getElementById('registerConfirmPassword');
+    const show = document.getElementById('showRegisterPasswordToggle').checked;
+    pwd.type = confirm.type = show ? 'text' : 'password';
+}
 
-            function handleRegister(event) {
-                event.preventDefault();
-                const name = document.getElementById('registerName').value.trim();
-                const phone = document.getElementById('registerPhone').value.trim();
-                const email = document.getElementById('registerEmail').value.trim();
-                const pwd = document.getElementById('registerPassword').value.trim();
-                const confirm = document.getElementById('registerConfirmPassword').value.trim();
-                const code = document.getElementById('verificationCode').value.trim();
-                const storedCode = localStorage.getItem('verificationCode');
+function sendVerificationCode() {
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    localStorage.setItem('verificationCode', code);
+    alert("Verification Code (simulated): " + code);
+}
 
-                const error = document.getElementById('registerError');
-                const success = document.getElementById('registerMsg');
-                error.style.display = success.style.display = 'none';
+function handleRegister(event) {
+    event.preventDefault();
+    const name = document.getElementById('registerName').value.trim();
+    const phone = document.getElementById('registerPhone').value.trim();
+    const email = document.getElementById('registerEmail').value.trim();
+    const pwd = document.getElementById('registerPassword').value.trim();
+    const confirm = document.getElementById('registerConfirmPassword').value.trim();
+    const code = document.getElementById('verificationCode').value.trim();
+    const storedCode = localStorage.getItem('verificationCode');
 
-                if (!name || !phone || !email || !pwd || !confirm || !code) {
-                    error.textContent = "Please fill in all fields.";
-                    error.style.display = 'block';
-                    return;
-                }
+    const error = document.getElementById('registerError');
+    const success = document.getElementById('registerMsg');
+    error.style.display = success.style.display = 'none';
 
-                if (pwd !== confirm) {
-                    error.textContent = "Passwords do not match.";
-                    error.style.display = 'block';
-                    return;
-                }
+    if (!name || !phone || !email || !pwd || !confirm || !code) {
+        error.textContent = "Please fill in all fields.";
+        error.style.display = 'block';
+        return;
+    }
 
-                if (code !== storedCode) {
-                    error.textContent = "Invalid verification code.";
-                    error.style.display = 'block';
-                    return;
-                }
+    if (pwd !== confirm) {
+        error.textContent = "Passwords do not match.";
+        error.style.display = 'block';
+        return;
+    }
 
-                const users = JSON.parse(localStorage.getItem(usersKey)) || [];
-                if (users.some(u => u.email === email || u.phone === phone)) {
-                    error.textContent = "User already registered.";
-                    error.style.display = 'block';
-                    return;
-                }
+    if (code !== storedCode) {
+        error.textContent = "Invalid verification code.";
+        error.style.display = 'block';
+        return;
+    }
 
-                users.push({ name, phone, email, password: pwd, smsAlerts: false });
-                localStorage.setItem(usersKey, JSON.stringify(users));
-                success.textContent = "Registration successful! Please log in.";
-                success.style.display = 'block';
-                showAlert("Registration successful!");
+    const users = JSON.parse(localStorage.getItem(usersKey)) || [];
+    if (users.some(u => u.email === email || u.phone === phone)) {
+        error.textContent = "User already registered.";
+        error.style.display = 'block';
+        return;
+    }
 
-                setTimeout(() => {
-                    closePopup('registerModal');
-                }, 2000); // Delay for 2 seconds before closing the modal
-            }
+    users.push({ name, phone, email, password: pwd, smsAlerts: false });
+    localStorage.setItem(usersKey, JSON.stringify(users));
+    success.textContent = "Registration successful! Please log in.";
+    success.style.display = 'block';
+    showAlert("Registration successful!");
 
-            function handleLogin(event) {
-                event.preventDefault();
-                const id = document.getElementById('loginEmail').value.trim();
-                const pwd = document.getElementById('loginPassword').value.trim();
-                const error = document.getElementById('loginError');
-                error.style.display = 'none';
+    setTimeout(() => {
+        closePopup('registerModal');
+    }, 2000); // Delay for 2 seconds before closing the modal
+}
 
-                const users = JSON.parse(localStorage.getItem(usersKey)) || [];
-                const user = users.find(u => (u.email === id || u.phone === id) && u.password === pwd);
+function handleLogin(event) {
+    event.preventDefault();
+    const id = document.getElementById('loginEmail').value.trim();
+    const pwd = document.getElementById('loginPassword').value.trim();
+    const error = document.getElementById('loginError');
+    error.style.display = 'none';
 
-                if (user) {
-                    localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('currentUser', JSON.stringify(user));
-                    showAlert("Login successful!");
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 2000); // Delay for 2 seconds before redirecting
-                } else {
-                    error.textContent = "Invalid email or password.";
-                    error.style.display = 'block';
-                    showAlert("Login failed. Please check your credentials.");
-                }
-            }
+    const users = JSON.parse(localStorage.getItem(usersKey)) || [];
+    const user = users.find(u => (u.email === id || u.phone === id) && u.password === pwd);
 
-            function saveProfile(event) {
-                event.preventDefault();
-                const name = document.getElementById('profileName').value.trim();
-                const phone = document.getElementById('profilePhone').value.trim();
-                const smsAlerts = document.getElementById('smsToggle').checked;
+    if (user) {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        showAlert("Login successful!");
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 2000); // Delay for 2 seconds before redirecting
+    } else {
+        error.textContent = "Invalid email or password.";
+        error.style.display = 'block';
+        showAlert("Login failed. Please check your credentials.");
+    }
+}
 
-                const users = JSON.parse(localStorage.getItem(usersKey)) || [];
-                let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+function saveProfile(event) {
+    event.preventDefault();
+    const name = document.getElementById('profileName').value.trim();
+    const phone = document.getElementById('profilePhone').value.trim();
+    const smsAlerts = document.getElementById('smsToggle').checked;
 
-                const updatedUsers = users.map(u => {
-                    if (u.email === currentUser.email) {
-                        return { ...u, name, phone, smsAlerts };
-                    }
-                    return u;
-                });
+    const users = JSON.parse(localStorage.getItem(usersKey)) || [];
+    let currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-                localStorage.setItem(usersKey, JSON.stringify(updatedUsers));
-                currentUser = { ...currentUser, name, phone, smsAlerts };
-                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    const updatedUsers = users.map(u => {
+        if (u.email === currentUser.email) {
+            return { ...u, name, phone, smsAlerts };
+        }
+        return u;
+    });
 
-                const msg = document.getElementById('profileMsg');
-                msg.style.display = 'block';
-                setTimeout(() => {
-                    msg.style.display = 'none';
-                    closePopup('profileModal');
-                }, 1500);
-            }
+    localStorage.setItem(usersKey, JSON.stringify(updatedUsers));
+    currentUser = { ...currentUser, name, phone, smsAlerts };
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
-            function logout() {
-                localStorage.removeItem('isLoggedIn');
-                localStorage.removeItem('currentUser');
-                document.querySelector('.nav-buttons').innerHTML = `
-                    <button onclick="openPopup('loginModal')">Login</button>
-                    <button onclick="openPopup('registerModal')">Register</button>
-                `;
-                showAlert("Logged out!");
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 2000); // Delay for 2 seconds before redirecting
-            }
+    const msg = document.getElementById('profileMsg');
+    msg.style.display = 'block';
+    setTimeout(() => {
+        msg.style.display = 'none';
+        closePopup('profileModal');
+    }, 1500);
+}
 
-            function openPopup(id) {
-                document.getElementById(id).classList.add('show');
-            }
+function logout() {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('currentUser');
+    showAlert("Logged out!");
+    setTimeout(() => {
+        window.location.href = 'index.html';
+    }, 2000); // Delay for 2 seconds before redirecting
+}
 
-            function closePopup(id) {
-                document.getElementById(id).classList.remove('show');
-            }
+function openPopup(id) {
+    document.getElementById(id).classList.add('show');
+}
 
-            function showAlert(message) {
-                const alertBox = document.createElement('div');
-                alertBox.textContent = message;
-                alertBox.style.position = 'fixed';
-                alertBox.style.bottom = '20px';
-                alertBox.style.right = '20px';
-                alertBox.style.backgroundColor = '#4caf50';
-                alertBox.style.color = 'white';
-                alertBox.style.padding = '10px 20px';
-                alertBox.style.borderRadius = '5px';
-                alertBox.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
-                alertBox.style.zIndex = '1000';
-                document.body.appendChild(alertBox);
+function closePopup(id) {
+    document.getElementById(id).classList.remove('show');
+}
 
-                setTimeout(() => {
-                    alertBox.remove();
-                }, 3000);
-            }
-            
+function showAlert(message) {
+    const alertBox = document.createElement('div');
+    alertBox.textContent = message;
+    alertBox.style.position = 'fixed';
+    alertBox.style.bottom = '20px';
+    alertBox.style.right = '20px';
+    alertBox.style.backgroundColor = '#4caf50';
+    alertBox.style.color = 'white';
+    alertBox.style.padding = '10px 20px';
+    alertBox.style.borderRadius = '5px';
+    alertBox.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
+    alertBox.style.zIndex = '1000';
+    document.body.appendChild(alertBox);
+
+    setTimeout(() => {
+        alertBox.remove();
+    }, 3000);
+}
+document.addEventListener('DOMContentLoaded', () => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const restrictedElements = [
+        document.getElementById('map'),
+        document.querySelector('.location-tracking-container'),
+        document.querySelector('.destination-filter-container'),
+        document.querySelector('.voice-search-container')
+    ];
+
+    restrictedElements.forEach(element => {
+        if (element) {
+            element.style.display = isLoggedIn ? 'block' : 'none';
+        }
+    });
+restrictedElements.forEach(element => {
+    if (element) {
+    element.style.display = isLoggedIn ? 'block' : 'none';
+    }
+});
+
+const dropdownMenu = document.getElementById('dropdownMenu');
+if (!isLoggedIn && dropdownMenu) {
+    dropdownMenu.innerHTML = `
+    <button onclick="openPopup('loginModal')" style="display: block; width: 100%; margin-bottom: 5px;">🔑 Login</button>
+    <button onclick="openPopup('registerModal')" style="display: block; width: 100%;">📝 Register</button>
+    `;
+}
+});
+
+function toggleLocationTracking() {
+    const locationToggle = document.getElementById('locationTrackingToggle');
+    const locationStatus = document.getElementById('location-status-1');
+
+    if (locationToggle.checked) {
+        if (navigator.geolocation) {
+            alert("Location tracking enabled.");
+            logEvent("Location tracking enabled.");
+            trackLocation(); // Start tracking location
+        } else {
+            alert("Location tracking is not supported by your browser.");
+            logEvent("Location tracking not supported.");
+            locationStatus.textContent = "Location tracking is not supported.";
+            locationToggle.checked = false; // Automatically disable toggle
+        }
+    } else {
+        alert("Location tracking disabled.");
+        logEvent("Location tracking disabled.");
+        locationStatus.textContent = "Location tracking is disabled.";
+    }
+}
 </script>
+<script>
+    const dailyFeedTips = [
+        "💡 Tip: Stay hydrated and take public transport to reduce your carbon footprint!",
+        "🌱 Eco Tip: Walking short distances saves fuel and keeps you healthy.",
+        "🚍 Travel Smart: Always check the bus ETA and route before you leave.",
+        "😎 Stay Safe: Wear a hat and sunglasses during peak sun hours.",
+        "📱 Tech Tip: Bookmark your favorite bus routes for quick access.",
+        "🌧️ Weather Alert: Carry an umbrella if there's a chance of rain today.",
+        "🌇 Evening Note: Buses might be crowded during rush hour—plan accordingly.",
+        "🎧 Commuter Tip: Listen to audiobooks or podcasts while commuting!",
+        "🕒 Time Saver: Use the traffic simulation to plan the fastest route.",
+        "🔋 Energy Tip: Dim your phone brightness to save battery while traveling.",
+        "🚦 Safety Tip: Always use pedestrian crossings and follow traffic signals.",
+        "🧣 Weather Tip: It might get chilly in the evening—carry a light jacket!",
+        "🌍 Green Living: Carpool or take the bus to help reduce city pollution.",
+        "🧘‍♀️ Wellness Tip: Deep breathing or meditation can ease commute stress.",
+        "🚌 Route Reminder: Check for route diversions or maintenance alerts.",
+        "🔔 Heads up: Enable SMS alerts for your favorite routes to stay updated.",
+        "📸 Fun Idea: Share a cool photo from your commute using #SmartBusCoimbatore!",
+        "🚫 Lost something? Use the feedback section to report lost & found items.",
+        "📊 Tracker Tip: Monitor live bus movement and plan like a pro.",
+        "🌞 Morning Boost: A good breakfast keeps your energy up during travel!"
+    ];
 
+    document.addEventListener('DOMContentLoaded', () => {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const dailyFeed = document.getElementById('dailyFeed');
+        const feedbackSection = document.getElementById('feedbackSection');
+
+        if (!isLoggedIn) {
+            dailyFeed.style.display = 'block';
+            feedbackSection.style.display = 'block';
+            fetchWeather();
+            showRandomTip();
+        } else {
+            dailyFeed.style.display = 'none';
+            feedbackSection.style.display = 'none';
+        }
+    });
+
+    function fetchWeather() {
+        const weatherInfo = document.getElementById('weatherInfo');
+        fetch('https://api.open-meteo.com/v1/forecast?latitude=11.0168&longitude=76.9558&current_weather=true')
+            .then(response => response.json())
+            .then(data => {
+                const weather = data.current_weather;
+                const temp = weather.temperature;
+                const code = weather.weathercode;
+                const condition = getWeatherCondition(code);
+                weatherInfo.textContent = `Current Weather: ${temp}°C, ${condition}`;
+            })
+            .catch(() => {
+                weatherInfo.textContent = 'Unable to fetch weather information.';
+            });
+    }
+
+    function getWeatherCondition(code) {
+        const conditions = {
+            0: "Clear sky",
+            1: "Mainly clear",
+            2: "Partly cloudy",
+            3: "Overcast",
+            45: "Fog",
+            48: "Depositing rime fog",
+            51: "Light drizzle",
+            53: "Moderate drizzle",
+            55: "Dense drizzle",
+            61: "Light rain",
+            63: "Moderate rain",
+            65: "Heavy rain",
+            80: "Rain showers",
+            95: "Thunderstorm",
+            99: "Heavy thunderstorm"
+        };
+        return conditions[code] || "Unknown weather";
+    }
+
+    function showRandomTip() {
+        const tipElement = document.getElementById('dailyTips');
+        const randomTip = dailyFeedTips[Math.floor(Math.random() * dailyFeedTips.length)];
+        tipElement.textContent = randomTip;
+    }
+
+    function submitFeedback(event) {
+        event.preventDefault();
+        const feedbackInput = document.getElementById('feedbackInput');
+        const feedbackMessage = document.getElementById('feedbackMessage');
+
+        if (feedbackInput.value.trim()) {
+            feedbackMessage.style.display = 'block';
+            feedbackInput.value = '';
+            setTimeout(() => {
+                feedbackMessage.style.display = 'none';
+            }, 3000);
+        }
+    }
+</script>
 </body>
 </html>
