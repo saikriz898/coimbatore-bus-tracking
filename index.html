@@ -29,16 +29,16 @@
                 <div class="dropdown-content" id="dropdownMenu" style="display: none; position: absolute; top: 70px; right: 0; background: #333; color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); padding: 10px; z-index: 1000;">
                     <div style="text-align: center; margin-bottom: 10px;">
                     <img src="${currentUser.profilePic || 'default-profile.png'}" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;">
-                    <p style="margin: 0; font-weight: bold;">${currentUser.name}</p>
-                    <p style="margin: 0; font-size: 0.9rem; color: #ccc;">${currentUser.email}</p>
+                    <p style="margin: 0; font-weight: bold;">👤 ${currentUser.name}</p>
+                    <p style="margin: 0; font-size: 0.9rem; color: #ccc;">📧 ${currentUser.email}</p>
                     </div>
                     <button onclick="openAdminPanel()" style="display: block; width: 100%; margin-bottom: 5px;">⚙️ Admin Panel</button>
                     <button onclick="logout()" style="display: block; width: 100%; margin-bottom: 5px;">🚪 Logout</button>
-                    <button onclick="openPopup('smsNotification')" style="display: block; width: 100%; margin-bottom: 5px;">SMS Notification</button>
-                    <button onclick="showModal()" style="display: block; width: 100%; margin-bottom: 5px;">Bus Info</button>
-                    <button onclick="openPopup('favoritesModal')" style="display: block; width: 100%; margin-bottom: 5px;">Favorites</button>
-                    <button onclick="openPopup('notificationsModal')" style="display: block; width: 100%; margin-bottom: 5px;">Notifications</button>
-                    <button onclick="openPopup('settingsModal')" style="display: block; width: 100%;">Settings</button>
+                    <button onclick="openPopup('smsNotification')" style="display: block; width: 100%; margin-bottom: 5px;">📩 SMS Notification</button>
+                    <button onclick="showModal()" style="display: block; width: 100%; margin-bottom: 5px;">🚌 Bus Info</button>
+                    <button onclick="openPopup('favoritesModal')" style="display: block; width: 100%; margin-bottom: 5px;">⭐ Favorites</button>
+                    <button onclick="openPopup('notificationsModal')" style="display: block; width: 100%; margin-bottom: 5px;">🔔 Notifications</button>
+                    <button onclick="openPopup('settingsModal')" style="display: block; width: 100%;">⚙️ Settings</button>
                 </div>
                 </div>
             `;
@@ -50,18 +50,20 @@
                 <div class="dropdown-content" id="dropdownMenu" style="display: none; position: absolute; top: 70px; right: 0; background: #333; color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); padding: 10px; z-index: 1000;">
                     <div style="text-align: center; margin-bottom: 10px;">
                     <img src="default-profile.png" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;">
-                    <p style="margin: 0; font-weight: bold;">Guest</p>
-                    <p style="margin: 0; font-size: 0.9rem; color: #ccc;">Please log in</p>
+                    <p style="margin: 0; font-weight: bold;">👤 Guest</p>
+                    <p style="margin: 0; font-size: 0.9rem; color: #ccc;">🔒 Please log in</p>
                     </div>
                     <button onclick="openPopup('loginModal')" style="display: block; width: 100%; margin-bottom: 5px;">🔑 Login</button>
                     <button onclick="openPopup('registerModal')" style="display: block; width: 100%; margin-bottom: 5px;">📝 Register</button>
-                    <button onclick="showModal()" style="display: block; width: 100%; margin-bottom: 5px;">Bus Info</button>
-                    <button onclick="openPopup('favoritesModal')" style="display: block; width: 100%; margin-bottom: 5px;">Favorites</button>
-                    <button onclick="openPopup('notificationsModal')" style="display: block; width: 100%; margin-bottom: 5px;">Notifications</button>
-                    <button onclick="openPopup('settingsModal')" style="display: block; width: 100%;">Settings</button>
+                    <button onclick="showModal()" style="display: block; width: 100%; margin-bottom: 5px;">🚌 Bus Info</button>
+                    <button onclick="openPopup('favoritesModal')" style="display: block; width: 100%; margin-bottom: 5px;">⭐ Favorites</button>
+                    <button onclick="openPopup('notificationsModal')" style="display: block; width: 100%; margin-bottom: 5px;">🔔 Notifications</button>
+                    <button onclick="openPopup('settingsModal')" style="display: block; width: 100%;">⚙️ Settings</button>
                 </div>
                 </div>
             `;
+            const loginButton = document.getElementById('loginButton');
+
             }
         });
 
@@ -78,32 +80,41 @@
         });
     </script>
 </nav>
-<div class="filter-container" style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; padding: 1rem; background: var(--card-bg); border-radius: 10px; box-shadow: var(--neon-glow);">
-    <div class="location-tracking-container" style="flex: 1; text-align: center;">
+<div id="filterSection" style="display: none;">
+    <div class="filter-container" style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; padding: 1rem; background: var(--card-bg); border-radius: 10px; box-shadow: var(--neon-glow);">
+      <!-- Location Tracking -->
+      <div class="location-tracking-container" style="flex: 1; text-align: center;">
         <button onclick="trackLocation()" style="padding: 10px 20px; border-radius: 8px; background: var(--accent-color); color: #fff; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">📍 Locate Me</button>
         <p id="location-status-1" style="margin-top: 10px; color: var(--text-color); font-size: 0.9rem;">Location status will appear here.</p>
-    </div>
-    <div class="destination-filter-container" style="flex: 1; text-align: center;">
+      </div>
+  
+      <!-- Destination Filter -->
+      <div class="destination-filter-container" style="flex: 1; text-align: center;">
         <label for="destination-filter" style="color: var(--text-color); font-weight: bold; margin-right: 10px;">Filter by Destination:</label>
         <select id="destination-filter" onchange="filterByDestination(this.value)" style="padding: 10px; border-radius: 8px; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--accent-color); box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">
-            <option value="">All Destinations</option>
+          <option value="">All Destinations</option>
         </select>
-    </div>
-    <div class="voice-search-container" style="flex: 1; text-align: center;"></div>
+      </div>
+  
+      <!-- Voice Search -->
+      <div class="voice-search-container" style="flex: 1; text-align: center;">
         <button onclick="startVoiceSearch()" style="padding: 10px 20px; border-radius: 8px; background: var(--primary-color); color: #fff; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">🎤 Voice Search</button>
         <p id="voice-search-status" style="margin-top: 10px; color: var(--text-color); font-size: 0.9rem;">Speak to search for a destination.</p>
+      </div>
     </div>
+  </div>
+  
     <script>
         function startVoiceSearch() {
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
             if (!isLoggedIn) {
-            alert('Please log in to use the voice search feature.');
-            return;
+                alert('Please log in to use the voice search feature.');
+                return;
             }
 
             if (!('webkitSpeechRecognition' in window)) {
-            alert('Voice search is not supported in this browser.');
-            return;
+                alert('Voice search is not supported in this browser.');
+                return;
             }
 
             const recognition = new webkitSpeechRecognition();
@@ -112,76 +123,94 @@
             recognition.maxAlternatives = 1;
 
             recognition.onstart = () => {
-            document.getElementById('voice-search-status').textContent = 'Listening...';
-            const utterance = new SpeechSynthesisUtterance('I am listening. Please say your destination.');
-            window.speechSynthesis.speak(utterance);
+                document.getElementById('voice-search-status').textContent = 'Listening...';
+                const utterance = new SpeechSynthesisUtterance('I am listening. Please say your destination.');
+                window.speechSynthesis.speak(utterance);
             };
 
             recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript;
-            document.getElementById('voice-search-status').textContent = `You said: "${transcript}"`;
-            const utterance = new SpeechSynthesisUtterance(`You said ${transcript}. Searching for buses.`);
-            window.speechSynthesis.speak(utterance);
-            filterByDestination(transcript);
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('voice-search-status').textContent = `You said: "${transcript}"`;
+                const utterance = new SpeechSynthesisUtterance(`You said ${transcript}. Searching for buses.`);
+                window.speechSynthesis.speak(utterance);
+
+                const filteredBuses = busData.filter(bus => bus.destination.toLowerCase().includes(transcript.toLowerCase()));
+                if (filteredBuses.length > 0) {
+                    const table = document.createElement('table');
+                    table.style.width = '100%';
+                    table.style.borderCollapse = 'collapse';
+                    table.style.marginTop = '10px';
+
+                    const headerRow = document.createElement('tr');
+                    headerRow.innerHTML = `
+                        <th style="border: 1px solid #ccc; padding: 8px; text-align: left;">Bus ID</th>
+                        <th style="border: 1px solid #ccc; padding: 8px; text-align: left;">Start</th>
+                        <th style="border: 1px solid #ccc; padding: 8px; text-align: left;">Destination</th>
+                        <th style="border: 1px solid #ccc; padding: 8px; text-align: left;">Timings</th>
+                    `;
+                    table.appendChild(headerRow);
+
+                    filteredBuses.forEach(bus => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td style="border: 1px solid #ccc; padding: 8px;">${bus.id}</td>
+                            <td style="border: 1px solid #ccc; padding: 8px;">${bus.start}</td>
+                            <td style="border: 1px solid #ccc; padding: 8px;">${bus.destination}</td>
+                            <td style="border: 1px solid #ccc; padding: 8px;">${bus.time}</td>
+                        `;
+                        table.appendChild(row);
+                    });
+
+                    const voiceSearchStatus = document.getElementById('voice-search-status');
+                    voiceSearchStatus.textContent = '';
+                    voiceSearchStatus.appendChild(table);
+
+                    const summary = `Found ${filteredBuses.length} buses.`;
+                    const utterance = new SpeechSynthesisUtterance(summary);
+                    window.speechSynthesis.speak(utterance);
+
+                    // Show buses on the map
+                    loadBuses(filteredBuses);
+                } else {
+                    const utterance = new SpeechSynthesisUtterance('No buses found for the given destination.');
+                    window.speechSynthesis.speak(utterance);
+                    document.getElementById('voice-search-status').textContent = 'No buses found.';
+                }
             };
 
             recognition.onerror = (event) => {
-            document.getElementById('voice-search-status').textContent = 'Error occurred during voice recognition.';
-            const utterance = new SpeechSynthesisUtterance('An error occurred during voice recognition. Please try again.');
-            window.speechSynthesis.speak(utterance);
-            console.error('Voice recognition error:', event.error);
-            };
-
-            recognition.onend = () => {
-            document.getElementById('voice-search-status').textContent = 'Voice search ended.';
-            const utterance = new SpeechSynthesisUtterance('Voice search has ended.');
-            window.speechSynthesis.speak(utterance);
+                document.getElementById('voice-search-status').textContent = 'Error occurred during voice recognition.';
+                const utterance = new SpeechSynthesisUtterance('An error occurred during voice recognition. Please try again.');
+                window.speechSynthesis.speak(utterance);
+                console.error('Voice recognition error:', event.error);
             };
 
             recognition.start();
         }
     </script>
 </div>
-<div id="dailyFeed" style="display: none; margin-top: 20px; padding: 1rem; background: var(--card-bg); border-radius: 10px; box-shadow: var(--neon-glow);">
-    <h2 style="color: var(--primary-color);">🌤️ Daily Feed & Weather</h2>
-    <p id="weatherInfo" style="color: var(--text-color);">Fetching weather information...</p>
-    <p id="dailyTips" style="color: var(--text-color); margin-top: 10px;">Loading tip of the day...</p>
-</div>
-<div id="feedbackSection" style="margin-top: 20px; padding: 1.5rem; background: var(--card-bg); border-radius: 12px; box-shadow: var(--neon-glow);"></div>
-    <h2 style="color: var(--primary-color); text-align: center; text-shadow: 0 0 10px var(--primary-color);">📝 Share Your Feedback</h2>
-    <form onsubmit="submitFeedback(event)" style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1rem;">
-        <input type="text" id="feedbackName" placeholder="Your Name" required style="width: 100%; padding: 12px; border-radius: 10px; background: #28283d; color: var(--text-color); border: 1px solid var(--accent-color); font-size: 1rem;" />
-        <textarea id="feedbackInput" placeholder="We value your feedback! Share your thoughts..." required style="width: 100%; height: 120px; padding: 12px; border-radius: 10px; background: #28283d; color: var(--text-color); border: 1px solid var(--accent-color); resize: none; font-size: 1rem;"></textarea>
-        <div style="display: flex; flex-direction: column; gap: 0.8rem;">
-            <label style="color: var(--text-color); font-weight: bold; font-size: 1.1rem;">Rate your experience:</label>
-            <div style="display: flex; gap: 15px; align-items: center; justify-content: center;">
-                <input type="radio" id="rating1" name="rating" value="1" required>
-                <label for="rating1" style="color: var(--text-color); font-size: 1rem; cursor: pointer;">1</label>
-                <input type="radio" id="rating2" name="rating" value="2">
-                <label for="rating2" style="color: var(--text-color); font-size: 1rem; cursor: pointer;">2</label>
-                <input type="radio" id="rating3" name="rating" value="3">
-                <label for="rating3" style="color: var(--text-color); font-size: 1rem; cursor: pointer;">3</label>
-                <input type="radio" id="rating4" name="rating" value="4">
-                <label for="rating4" style="color: var(--text-color); font-size: 1rem; cursor: pointer;">4</label>
-                <input type="radio" id="rating5" name="rating" value="5">
-                <label for="rating5" style="color: var(--text-color); font-size: 1rem; cursor: pointer;">5</label>
-            </div>
-        </div>
-        <button type="submit" style="padding: 12px 25px; border-radius: 10px; background: var(--primary-color); color: #fff; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">Submit Feedback</button>
-    </form>
-    <p id="feedbackMessage" style="color: lime; display: none; margin-top: 15px; text-align: center; font-size: 1rem;">Thank you for your valuable feedback! 😊</p>
-    <div id="feedbackList" style="margin-top: 20px; padding: 1rem; background: var(--card-bg); border-radius: 10px; box-shadow: var(--neon-glow);">
-        <h3 style="color: var(--primary-color); text-align: center;">📋 Feedback History</h3>
-        <ul id="feedbackHistory" style="list-style-type: none; padding: 0; color: var(--text-color);">
-            <!-- Feedback history will be dynamically loaded here -->
-        </ul>
+<div id="loggedOutOnlyContent" style="display: none;">
+    <div id="dailyFeed" style="margin-top: 20px; padding: 1rem; background: var(--card-bg); border-radius: 10px; box-shadow: var(--neon-glow);">
+        <h2 style="color: var(--primary-color);">🌤️ Daily Feed & Weather</h2>
+        <p id="weatherInfo" style="color: var(--text-color);">Fetching weather information...</p>
+        <p id="dailyTips" style="color: var(--text-color); margin-top: 10px;">Loading tip of the day...</p>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            loadFeedbackHistory();
-        });
-    </script>
+
+    <div id="feedbackSection" style="margin-top: 20px; padding: 1.5rem; background: var(--card-bg); border-radius: 12px; box-shadow: var(--neon-glow);">
+        <h2 style="color: var(--primary-color); text-align: center; text-shadow: 0 0 10px var(--primary-color);">📝 Share Your Feedback</h2>
+        <form onsubmit="submitFeedback(event)" style="display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1rem;">
+            <!-- form elements... -->
+        </form>
+        <p id="feedbackMessage" style="color: lime; display: none; margin-top: 15px; text-align: center; font-size: 1rem;">Thank you for your valuable feedback! 😊</p>
+        <div id="feedbackList" style="margin-top: 20px; padding: 1rem; background: var(--card-bg); border-radius: 10px; box-shadow: var(--neon-glow);">
+            <h3 style="color: var(--primary-color); text-align: center;">📋 Feedback History</h3>
+            <ul id="feedbackHistory" style="list-style-type: none; padding: 0; color: var(--text-color);">
+                <!-- Feedback history will be dynamically loaded here -->
+            </ul>
+        </div>
+    </div>
 </div>
+
 
 <script>
     const feedbackKey = 'userFeedback';
@@ -497,7 +526,6 @@ function saveUserUpdate(index) {
         <button class="reset-btn" onclick="resetSettings()">♻️ Reset to Default</button>
     </div>
 </div>
-
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const busData = [
@@ -633,19 +661,33 @@ function closePopup(id) {
 function populateTable(filteredBuses = busData) {
     const table = document.getElementById('busTable');
     table.innerHTML = ''; // Clear existing rows
+
     if (filteredBuses.length === 0) {
         table.innerHTML = '<tr><td colspan="5">No buses found</td></tr>';
     } else {
-        filteredBuses.forEach(bus => {
-            const row = `
-                <tr>
-                    <td>${bus.id}</td>
-                    <td>${bus.start}</td>
-                    <td>${bus.destination}</td>
-                    <td>${bus.time}</td>
-                    <td><button onclick="addTracking('${bus.id}')">Track</button></td>
-                </tr>`;
-            table.innerHTML += row;
+        const busesByDestination = filteredBuses.reduce((acc, bus) => {
+            if (!acc[bus.destination]) {
+                acc[bus.destination] = [];
+            }
+            acc[bus.destination].push(bus);
+            return acc;
+        }, {});
+
+        Object.keys(busesByDestination).forEach(destination => {
+            const destinationRow = `<tr><td colspan="5" style="font-weight: bold; text-align: center; ">${destination}</td></tr>`;
+            table.innerHTML += destinationRow;
+
+            busesByDestination[destination].forEach(bus => {
+                const row = `
+                    <tr>
+                        <td>${bus.id}</td>
+                        <td>${bus.start}</td>
+                        <td>${bus.destination}</td>
+                        <td>${bus.time}</td>
+                        <td><button onclick="addTracking('${bus.id}')">Track</button></td>
+                    </tr>`;
+                table.innerHTML += row;
+            });
         });
     }
 
@@ -853,21 +895,23 @@ function logEvent(event) {
 }
 
 function loadBuses(filteredBuses = busData) {
-    // Clear existing markers from the map
-    markers.forEach(m => map.removeLayer(m));
-    markers = [];
+    // Remove existing markers from the map
+    Object.values(busMarkers).forEach(marker => map.removeLayer(marker));
+    busMarkers = {};
 
     // Add new markers for the filtered buses
     filteredBuses.forEach(bus => {
-        const marker = L.marker([bus.lat, bus.lon]).addTo(map)
+        const marker = L.marker([bus.lat, bus.lon])
+            .addTo(map)
             .bindPopup(`🚌 <strong>Bus ${bus.id}</strong><br><strong>Route:</strong> ${bus.start} → ${bus.destination}<br><strong>Timings:</strong> ${bus.time}`);
-        markers.push(marker);
+        busMarkers[bus.id] = marker;
     });
 
-    // Fit the map view to the bounds of the markers if any buses are displayed
-    if (markers.length > 0) {
-        const group = new L.featureGroup(markers);
-        map.fitBounds(group.getBounds().pad(0.1));
+    // Adjust the map view to fit the markers if any buses are displayed
+    const markerPositions = Object.values(busMarkers).map(marker => marker.getLatLng());
+    if (markerPositions.length > 0) {
+        const bounds = L.latLngBounds(markerPositions);
+        map.fitBounds(bounds.pad(0.1));
     } else {
         map.setView([11.0168, 76.9558], 12); // Reset to default view if no buses are displayed
     }
@@ -876,63 +920,11 @@ function loadBuses(filteredBuses = busData) {
     populateTable(filteredBuses);
 
     // Log the event
-    logEvent(`Loaded ${filteredBuses.length} Buses on Map`);
+    logEvent(`Loaded ${filteredBuses.length} buses on the map`);
 }
 
 // Initial load of all buses
 loadBuses();
-function toggleDarkMode() {
-    const isDarkMode = document.getElementById('darkModeToggle').checked;
-    if (isDarkMode) {
-        document.documentElement.style.setProperty('--main-bg', '#1e272e');
-        document.documentElement.style.setProperty('--card-bg', '#2f3640');
-        document.documentElement.style.setProperty('--text', '#f5f6fa');
-        document.documentElement.style.setProperty('--accent', '#4cd137');
-        logEvent('Dark Mode enabled');
-    } else {
-        document.documentElement.style.setProperty('--main-bg', 'linear-gradient(135deg, #2c3e50, #4ca1af)');
-        document.documentElement.style.setProperty('--card-bg', '#ffffff');
-        document.documentElement.style.setProperty('--text', '#111');
-        document.documentElement.style.setProperty('--accent', '#2ecc71');
-        logEvent('Dark Mode disabled');
-    }
-}
-
-function changeLanguage() {
-    const selectedLanguage = document.getElementById('languageSelect').value;
-    alert(`Language changed to ${selectedLanguage}`);
-    logEvent(`Language changed to: ${selectedLanguage}`);
-    // Add logic to dynamically update text content based on the selected language
-}
-
-function resetSettings() {
-    document.getElementById('darkModeToggle').checked = false;
-    document.getElementById('languageSelect').value = 'en';
-    document.getElementById('notificationsToggle').checked = false;
-    document.getElementById('smsAlertToggle').checked = false;
-    document.getElementById('voiceToggle').checked = false;
-    toggleDarkMode(); // Reset dark mode to default
-    alert('Settings have been reset to default.');
-    logEvent('Settings reset to default');
-}
-
-document.getElementById('notificationsToggle').addEventListener('change', function () {
-    const isEnabled = this.checked;
-    alert(`Notifications ${isEnabled ? 'enabled' : 'disabled'}`);
-    logEvent(`Notifications ${isEnabled ? 'enabled' : 'disabled'}`);
-});
-
-document.getElementById('smsAlertToggle').addEventListener('change', function () {
-    const isEnabled = this.checked;
-    alert(`SMS Alerts ${isEnabled ? 'enabled' : 'disabled'}`);
-    logEvent(`SMS Alerts ${isEnabled ? 'enabled' : 'disabled'}`);
-});
-
-document.getElementById('voiceToggle').addEventListener('change', function () {
-    const isEnabled = this.checked;
-    alert(`Voice Announcements ${isEnabled ? 'enabled' : 'disabled'}`);
-    logEvent(`Voice Announcements ${isEnabled ? 'enabled' : 'disabled'}`);
-});
 </script>
 <script>
 
@@ -1240,6 +1232,156 @@ function toggleLocationTracking() {
             }, 3000);
         }
     }
+    document.addEventListener('DOMContentLoaded', () => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+    const loggedOutOnlyContent = document.getElementById('loggedOutOnlyContent');
+    if (loggedOutOnlyContent) {
+        loggedOutOnlyContent.style.display = isLoggedIn ? 'none' : 'block';
+    }
+
+    // You can still load feedback if needed
+    if (!isLoggedIn) {
+        loadFeedbackHistory();
+    }
+});
+document.addEventListener('DOMContentLoaded', () => {
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const filterSection = document.getElementById('filterSection');
+  
+  // Show the filter bar only if the user is logged in
+  if (isLoggedIn && filterSection) {
+    filterSection.style.display = 'block';
+  } else {
+    filterSection.style.display = 'none';
+  }
+});
+
 </script>
+<script>
+    function resetSettings() {
+        // Reset all checkboxes and settings to default
+        document.getElementById("darkModeToggle").checked = false;
+        document.getElementById("voiceToggle").checked = false;
+        document.getElementById("notificationsToggle").checked = false;
+        document.getElementById("smsAlertToggle").checked = false;
+        document.getElementById("autoRefreshToggle").checked = false;
+        document.getElementById("locationTrackingToggle").checked = false;
+        document.getElementById("languageSelect").value = "en"; // Default language is English
+
+        // Clear localStorage for all settings
+        localStorage.removeItem("darkMode");
+        localStorage.removeItem("voiceAnnouncements");
+        localStorage.removeItem("notificationsEnabled");
+        localStorage.removeItem("smsAlertsEnabled");
+        localStorage.removeItem("autoRefresh");
+        localStorage.removeItem("locationTrackingEnabled");
+        localStorage.removeItem("language");
+
+        speak("Settings have been reset to default.");
+    }
+    // Function to open the modal
+    function openPopup(id) {
+        document.getElementById(id).style.display = "block";
+    }
+
+    // Function to close the modal
+    function closePopup(id) {
+        document.getElementById(id).style.display = "none";
+    }
+
+    // Function to load saved settings from localStorage
+    window.onload = function () {
+        // Load settings from localStorage
+        const darkMode = localStorage.getItem("darkMode") === "true";
+        const voiceEnabled = localStorage.getItem("voiceAnnouncements") === "true";
+        const notificationsEnabled = localStorage.getItem("notificationsEnabled") === "true";
+        const smsAlertsEnabled = localStorage.getItem("smsAlertsEnabled") === "true";
+        const autoRefresh = localStorage.getItem("autoRefresh") === "true";
+        const locationTrackingEnabled = localStorage.getItem("locationTrackingEnabled") === "true";
+        const selectedLanguage = localStorage.getItem("language") || "en";
+
+        // Apply saved settings
+        document.getElementById("darkModeToggle").checked = darkMode;
+        document.getElementById("voiceToggle").checked = voiceEnabled;
+        document.getElementById("notificationsToggle").checked = notificationsEnabled;
+        document.getElementById("smsAlertToggle").checked = smsAlertsEnabled;
+        document.getElementById("autoRefreshToggle").checked = autoRefresh;
+        document.getElementById("locationTrackingToggle").checked = locationTrackingEnabled;
+        document.getElementById("languageSelect").value = selectedLanguage;
+    }
+    // Additional functionality can be added here if needed
+    function toggleDarkMode() {
+        const isDarkMode = document.getElementById("darkModeToggle").checked;
+        if (isDarkMode) {
+            document.body.classList.add("dark-mode");
+            localStorage.setItem("darkMode", "true");
+        } else {
+            document.body.classList.remove("dark-mode");
+            localStorage.setItem("darkMode", "false");
+        }
+    }
+
+    function changeLanguage() {
+        const selectedLanguage = document.getElementById("languageSelect").value;
+        localStorage.setItem("language", selectedLanguage);
+        alert(`Language changed to ${selectedLanguage}`);
+        // Additional logic to update UI text based on the selected language can be added here
+    }
+
+    function toggleNotifications() {
+        const isEnabled = document.getElementById("notificationsToggle").checked;
+        localStorage.setItem("notificationsEnabled", isEnabled.toString());
+        alert(isEnabled ? "Notifications enabled." : "Notifications disabled.");
+    }
+
+    function toggleSmsAlerts() {
+        const isEnabled = document.getElementById("smsAlertToggle").checked;
+        localStorage.setItem("smsAlertsEnabled", isEnabled.toString());
+        alert(isEnabled ? "SMS Alerts enabled for favorite routes." : "SMS Alerts disabled.");
+    }
+
+    function toggleVoiceAnnouncements() {
+        const isEnabled = document.getElementById("voiceToggle").checked;
+        localStorage.setItem("voiceAnnouncements", isEnabled.toString());
+        alert(isEnabled ? "Voice Announcements enabled." : "Voice Announcements disabled.");
+    }
+
+    function toggleAutoRefresh() {
+        const isEnabled = document.getElementById("autoRefreshToggle").checked;
+        localStorage.setItem("autoRefresh", isEnabled.toString());
+        alert(isEnabled ? "Auto-Refresh for bus data enabled." : "Auto-Refresh for bus data disabled.");
+    }
+
+    function toggleLocationTracking() {
+        const isEnabled = document.getElementById("locationTrackingToggle").checked;
+        localStorage.setItem("locationTrackingEnabled", isEnabled.toString());
+        alert(isEnabled ? "Location Tracking enabled." : "Location Tracking disabled.");
+        if (isEnabled) {
+            trackLocation();
+        }
+    }
+
+    function resetSettings() {
+        document.getElementById("darkModeToggle").checked = false;
+        document.getElementById("voiceToggle").checked = false;
+        document.getElementById("notificationsToggle").checked = false;
+        document.getElementById("smsAlertToggle").checked = false;
+        document.getElementById("autoRefreshToggle").checked = false;
+        document.getElementById("locationTrackingToggle").checked = false;
+        document.getElementById("languageSelect").value = "en";
+
+        localStorage.removeItem("darkMode");
+        localStorage.removeItem("voiceAnnouncements");
+        localStorage.removeItem("notificationsEnabled");
+        localStorage.removeItem("smsAlertsEnabled");
+        localStorage.removeItem("autoRefresh");
+        localStorage.removeItem("locationTrackingEnabled");
+        localStorage.removeItem("language");
+
+        alert("Settings have been reset to default.");
+    }
+</script>
+
 </body>
 </html>
