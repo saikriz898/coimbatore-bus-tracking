@@ -3,67 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🚌 Coimbatore Smart Bus Tracker</title>
+  <title>🚌Smart Bus Tracker</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome-animation/1.0.0/font-awesome-animation.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome-animation/1.0.0/font-awesome-animation.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome-animation/1.0.0/font-awesome-animation.min.css"/>
     <link rel="stylesheet" href="styles.css"/>
     <script src="script.js"></script>
 </head>
 <div>
 
 <nav>
-    <h1>🚌 Coimbatore Bus Tracker</h1>
+    <h1>🚌Smart Bus Tracker</h1>
     <div class="nav-buttons" style="display: flex; align-items: center; gap: 10px;"></div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
             const navButtons = document.querySelector('.nav-buttons');
             if (isLoggedIn) {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            navButtons.innerHTML = `
-                <div style="display: flex; align-items: center; position: relative;">
-                <img src="${currentUser.profilePic || 'default-profile.png'}" alt="Profile" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 10px; cursor: pointer;" onclick="openAdminPanel()">
-                <button style="background: none; border: none; font-size: 24px; cursor: pointer;" onclick="toggleDropdown()">⋮</button>
-                <div class="dropdown-content" id="dropdownMenu" style="display: none; position: absolute; top: 70px; right: 0; background: #333; color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); padding: 10px; z-index: 1000;">
-                    <div style="text-align: center; margin-bottom: 10px;">
-                    <img src="${currentUser.profilePic || 'default-profile.png'}" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;">
-                    <p style="margin: 0; font-weight: bold;">👤 ${currentUser.name}</p>
-                    <p style="margin: 0; font-size: 0.9rem; color: #ccc;">📧 ${currentUser.email}</p>
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                navButtons.innerHTML = `
+                    <div style="display: flex; align-items: center; position: relative;">
+                        <img src="${currentUser?.profilePic || 'default-profile.png'}" alt="Profile" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 10px; cursor: pointer;" onclick="openAdminPanel()">
+                        <button style="background: none; border: none; font-size: 24px; cursor: pointer;" onclick="toggleDropdown()">⋮</button>
+                        <div class="dropdown-content" id="dropdownMenu" style="display: none; position: absolute; top: 70px; right: 0; background: #333; color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); padding: 10px; z-index: 1000;">
+                            <div style="text-align: center; margin-bottom: 10px;">
+                                <img src="${currentUser?.profilePic || 'default-profile.png'}" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;">
+                                <p style="margin: 0; font-weight: bold;">👤 ${currentUser?.name || 'User'}</p>
+                                <p style="margin: 0; font-size: 0.9rem; color: #ccc;">📧 ${currentUser?.email || 'N/A'}</p>
+                            </div>
+                            <button onclick="openAdminPanel()" style="display: block; width: 100%; margin-bottom: 5px;">⚙️ Admin Panel</button>
+                            <button onclick="logout()" style="display: block; width: 100%; margin-bottom: 5px;">🚪 Logout</button>
+                            <button onclick="openPopup('smsNotification')" style="display: block; width: 100%; margin-bottom: 5px;">📩 SMS Notification</button>
+                            <button onclick="showModal()" style="display: block; width: 100%; margin-bottom: 5px;">🚌 Bus Info</button>
+                            <button onclick="openPopup('favoritesModal')" style="display: block; width: 100%; margin-bottom: 5px;">⭐ Favorites</button>
+                            <button onclick="openPopup('notificationsModal')" style="display: block; width: 100%; margin-bottom: 5px;">🔔 Notifications</button>
+                            <button onclick="openPopup('settingsModal')" style="display: block; width: 100%;">⚙️ Settings</button>
+                        </div>
                     </div>
-                    <button onclick="openAdminPanel()" style="display: block; width: 100%; margin-bottom: 5px;">⚙️ Admin Panel</button>
-                    <button onclick="logout()" style="display: block; width: 100%; margin-bottom: 5px;">🚪 Logout</button>
-                    <button onclick="openPopup('smsNotification')" style="display: block; width: 100%; margin-bottom: 5px;">📩 SMS Notification</button>
-                    <button onclick="showModal()" style="display: block; width: 100%; margin-bottom: 5px;">🚌 Bus Info</button>
-                    <button onclick="openPopup('favoritesModal')" style="display: block; width: 100%; margin-bottom: 5px;">⭐ Favorites</button>
-                    <button onclick="openPopup('notificationsModal')" style="display: block; width: 100%; margin-bottom: 5px;">🔔 Notifications</button>
-                    <button onclick="openPopup('settingsModal')" style="display: block; width: 100%;">⚙️ Settings</button>
-                </div>
-                </div>
-            `;
+                `;
             } else {
-            navButtons.innerHTML = `
-                <div style="display: flex; align-items: center; position: relative;">
-                <img src="default-profile.png" alt="Profile" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 10px; cursor: pointer;" onclick="openPopup('loginModal')">
-                <button style="background: none; border: none; font-size: 24px; cursor: pointer;" onclick="toggleDropdown()">⋮</button>
-                <div class="dropdown-content" id="dropdownMenu" style="display: none; position: absolute; top: 70px; right: 0; background: #333; color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); padding: 10px; z-index: 1000;">
-                    <div style="text-align: center; margin-bottom: 10px;">
-                    <img src="default-profile.png" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;">
-                    <p style="margin: 0; font-weight: bold;">👤 Guest</p>
-                    <p style="margin: 0; font-size: 0.9rem; color: #ccc;">🔒 Please log in</p>
+                navButtons.innerHTML = `
+                    <div style="display: flex; align-items: center; position: relative;">
+                        <img src="default-profile.png" alt="Profile" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 10px; cursor: pointer;" onclick="openPopup('loginModal')">
+                        <button style="background: none; border: none; font-size: 24px; cursor: pointer;" onclick="toggleDropdown()">⋮</button>
+                        <div class="dropdown-content" id="dropdownMenu" style="display: none; position: absolute; top: 70px; right: 0; background: #333; color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); padding: 10px; z-index: 1000;">
+                            <div style="text-align: center; margin-bottom: 10px;">
+                                <img src="default-profile.png" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;">
+                                <p style="margin: 0; font-weight: bold;">👤 Guest</p>
+                                <p style="margin: 0; font-size: 0.9rem; color: #ccc;">🔒 Please log in</p>
+                            </div>
+                            <button onclick="openPopup('loginModal')" style="display: block; width: 100%; margin-bottom: 5px;">🔑 Login</button>
+                            <button onclick="openPopup('registerModal')" style="display: block; width: 100%; margin-bottom: 5px;">📝 Register</button>
+                            <button onclick="showModal()" style="display: block; width: 100%; margin-bottom: 5px;">🚌 Bus Info</button>
+                            <button onclick="openPopup('favoritesModal')" style="display: block; width: 100%; margin-bottom: 5px;">⭐ Favorites</button>
+                            <button onclick="openPopup('notificationsModal')" style="display: block; width: 100%; margin-bottom: 5px;">🔔 Notifications</button>
+                            <button onclick="openPopup('settingsModal')" style="display: block; width: 100%;">⚙️ Settings</button>
+                        </div>
                     </div>
-                    <button onclick="openPopup('loginModal')" style="display: block; width: 100%; margin-bottom: 5px;">🔑 Login</button>
-                    <button onclick="openPopup('registerModal')" style="display: block; width: 100%; margin-bottom: 5px;">📝 Register</button>
-                    <button onclick="showModal()" style="display: block; width: 100%; margin-bottom: 5px;">🚌 Bus Info</button>
-                    <button onclick="openPopup('favoritesModal')" style="display: block; width: 100%; margin-bottom: 5px;">⭐ Favorites</button>
-                    <button onclick="openPopup('notificationsModal')" style="display: block; width: 100%; margin-bottom: 5px;">🔔 Notifications</button>
-                    <button onclick="openPopup('settingsModal')" style="display: block; width: 100%;">⚙️ Settings</button>
-                </div>
-                </div>
-            `;
-            const loginButton = document.getElementById('loginButton');
-
+                `;
             }
         });
 
@@ -80,6 +81,22 @@
         });
     </script>
 </nav>
+<div class="fab" onclick="showModal()">
+    <i class="fa fa-bus"></i>
+</div>
+<div class="scroll-to-top" id="scrollToTop" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">
+    <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+    document.addEventListener('scroll', () => {
+        const scrollToTop = document.getElementById('scrollToTop');
+        if (window.scrollY > 200) {
+            scrollToTop.classList.add('show');
+        } else {
+            scrollToTop.classList.remove('show');
+        }
+    });
+</script>
 <div id="filterSection" style="display: none;">
     <div class="filter-container" style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; padding: 1rem; background: var(--card-bg); border-radius: 10px; box-shadow: var(--neon-glow);">
       <!-- Location Tracking -->
