@@ -27,43 +27,29 @@
                 const currentUser = JSON.parse(localStorage.getItem('currentUser'));
                 navButtons.innerHTML = `
                     <div style="display: flex; align-items: center; position: relative;">
-                        <img src="${currentUser?.profilePic || 'default-profile.png'}" alt="Profile" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 10px; cursor: pointer;" onclick="openAdminPanel()">
+                        <img src="${currentUser?.profilePic || 'https://via.placeholder.com/60'}" alt="Profile" id="profileImage" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 10px; cursor: pointer;" onclick="openPopup('profileModal')">
                         <button style="background: none; border: none; font-size: 24px; cursor: pointer;" onclick="toggleDropdown()">⋮</button>
                         <div class="dropdown-content" id="dropdownMenu" style="display: none; position: absolute; top: 70px; right: 0; background: #333; color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); padding: 10px; z-index: 1000;">
                             <div style="text-align: center; margin-bottom: 10px;">
-                                <img src="${currentUser?.profilePic || 'default-profile.png'}" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;">
+                                <img src="${currentUser?.profilePic || 'https://via.placeholder.com/100'}" alt="Profile" id="dropdownProfileImage" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;">
                                 <p style="margin: 0; font-weight: bold;">👤 ${currentUser?.name || 'User'}</p>
                                 <p style="margin: 0; font-size: 0.9rem; color: #ccc;">📧 ${currentUser?.email || 'N/A'}</p>
                             </div>
-                            <button onclick="openAdminPanel()" style="display: block; width: 100%; margin-bottom: 5px;">⚙️ Admin Panel</button>
-                            <button onclick="logout()" style="display: block; width: 100%; margin-bottom: 5px;">🚪 Logout</button>
-                            <button onclick="openPopup('smsNotification')" style="display: block; width: 100%; margin-bottom: 5px;">📩 SMS Notification</button>
                             <button onclick="showModal()" style="display: block; width: 100%; margin-bottom: 5px;">🚌 Bus Info</button>
                             <button onclick="openPopup('favoritesModal')" style="display: block; width: 100%; margin-bottom: 5px;">⭐ Favorites</button>
                             <button onclick="openPopup('notificationsModal')" style="display: block; width: 100%; margin-bottom: 5px;">🔔 Notifications</button>
-                            <button onclick="openPopup('settingsModal')" style="display: block; width: 100%;">⚙️ Settings</button>
+                            <button onclick="openPopup('smsNotification')" style="display: block; width: 100%; margin-bottom: 5px;">📩 SMS Notification</button>
+                            <button onclick="openPopup('settingsModal')" style="display: block; width: 100%; margin-bottom: 5px;">⚙️ Settings</button>
+                            <button onclick="openPopup('profileModal')" style="display: block; width: 100%; margin-bottom: 5px;">👤 Edit Profile</button>
+                            <button onclick="openPopup('helpModal')" style="display: block; width: 100%; margin-bottom: 5px;">❓ Help</button>
+                            <button onclick="logout()" style="display: block; width: 100%;">🚪 Logout</button>
                         </div>
                     </div>
                 `;
             } else {
                 navButtons.innerHTML = `
-                    <div style="display: flex; align-items: center; position: relative;">
-                        <img src="default-profile.png" alt="Profile" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 10px; cursor: pointer;" onclick="openPopup('loginModal')">
-                        <button style="background: none; border: none; font-size: 24px; cursor: pointer;" onclick="toggleDropdown()">⋮</button>
-                        <div class="dropdown-content" id="dropdownMenu" style="display: none; position: absolute; top: 70px; right: 0; background: #333; color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); padding: 10px; z-index: 1000;">
-                            <div style="text-align: center; margin-bottom: 10px;">
-                                <img src="default-profile.png" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;">
-                                <p style="margin: 0; font-weight: bold;">👤 Guest</p>
-                                <p style="margin: 0; font-size: 0.9rem; color: #ccc;">🔒 Please log in</p>
-                            </div>
-                            <button onclick="openPopup('loginModal')" style="display: block; width: 100%; margin-bottom: 5px;">🔑 Login</button>
-                            <button onclick="openPopup('registerModal')" style="display: block; width: 100%; margin-bottom: 5px;">📝 Register</button>
-                            <button onclick="showModal()" style="display: block; width: 100%; margin-bottom: 5px;">🚌 Bus Info</button>
-                            <button onclick="openPopup('favoritesModal')" style="display: block; width: 100%; margin-bottom: 5px;">⭐ Favorites</button>
-                            <button onclick="openPopup('notificationsModal')" style="display: block; width: 100%; margin-bottom: 5px;">🔔 Notifications</button>
-                            <button onclick="openPopup('settingsModal')" style="display: block; width: 100%;">⚙️ Settings</button>
-                        </div>
-                    </div>
+                    <button onclick="openPopup('loginModal')" style="background: var(--primary-color); color: #fff; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer;">Login</button>
+                    <button onclick="openPopup('registerModal')" style="background: var(--accent-color); color: #fff; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer;">Register</button>
                 `;
             }
         });
@@ -75,20 +61,267 @@
 
         document.addEventListener('click', (event) => {
             const dropdownMenu = document.getElementById('dropdownMenu');
-            if (dropdownMenu && !dropdownMenu.contains(event.target) && !event.target.closest('button')) {
+            const toggleButton = document.querySelector('button[onclick="toggleDropdown()"]');
+            if (dropdownMenu && !dropdownMenu.contains(event.target) && event.target !== toggleButton) {
                 dropdownMenu.style.display = 'none';
             }
         });
+
+        function updateProfileImage(newImageUrl) {
+            const profileImage = document.getElementById('profileImage');
+            const dropdownProfileImage = document.getElementById('dropdownProfileImage');
+            const defaultImage = 'https://via.placeholder.com/60';
+
+            profileImage.src = newImageUrl || defaultImage;
+            dropdownProfileImage.src = newImageUrl || defaultImage;
+
+            // Save the updated profile image to localStorage
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+            currentUser.profilePic = newImageUrl || defaultImage;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            }
+        }
+
+        function updateProfilePicture(event) {
+            const file = event.target.files[0];
+            if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const newImageUrl = e.target.result;
+                document.getElementById('profilePic').src = newImageUrl;
+                updateProfileImage(newImageUrl);
+            };
+            reader.readAsDataURL(file);
+            }
+        }
+
+        function saveProfile(event) {
+            event.preventDefault();
+            const name = document.getElementById('profileName').value.trim();
+            const phone = document.getElementById('profilePhone').value.trim();
+            const smsAlerts = document.getElementById('smsToggle').checked;
+
+            const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+            let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+            if (!currentUser) {
+            alert('No user is currently logged in.');
+            return;
+            }
+
+            const updatedUsers = users.map(u => {
+            if (u.email === currentUser.email) {
+                return { ...u, name, phone, smsAlerts };
+            }
+            return u;
+            });
+
+            localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
+            currentUser = { ...currentUser, name, phone, smsAlerts };
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+            // Update navbar and dropdown profile immediately
+            document.getElementById('profileImage').src = currentUser.profilePic || 'https://via.placeholder.com/60';
+            document.getElementById('dropdownProfileImage').src = currentUser.profilePic || 'https://via.placeholder.com/100';
+            document.querySelector('.dropdown-content p').textContent = `👤 ${currentUser.name || 'User'}`;
+
+            const msg = document.getElementById('profileMsg');
+            msg.style.display = 'block';
+            setTimeout(() => {
+            msg.style.display = 'none';
+            closePopup('profileModal');
+            }, 1500);
+        }
     </script>
 </nav>
+<div id="profileModal" class="modal" style="background: linear-gradient(135deg, #1e1e1e, #2a2a2a); color: #fff; padding: 2rem; border-radius: 15px; box-shadow: 0 0 25px rgba(0, 255, 255, 0.7);">
+    <button class="close-btn" onclick="closePopup('profileModal')" style="position: absolute; top: 15px; right: 15px; background: linear-gradient(135deg, #ff0059, #ff4081); color: #fff; border: none; border-radius: 50%; width: 35px; height: 35px; font-size: 18px; cursor: pointer; box-shadow: 0 0 20px rgba(255, 0, 89, 0.8);">×</button>
+    <h2 style="text-align: center; color: #00ffff; text-shadow: 0 0 15px #00ffff;">Edit Profile</h2>
+    <form onsubmit="saveProfile(event)" style="margin-top: 1.5rem;">
+        <div class="profile-pic-container" style="text-align: center; margin-bottom: 1.5rem;">
+            <img id="profilePic" src="https://via.placeholder.com/100" alt="Profile Picture" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #00ffff; box-shadow: 0 0 15px rgba(0, 255, 255, 0.7); transition: transform 0.3s;">
+            <div style="margin-top: 10px;">
+                <button type="button" onclick="document.getElementById('profilePicInput').click()" style="background: #00ffff; color: #000; padding: 8px 15px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem;">Change Picture</button>
+                <button type="button" onclick="removeProfilePicture()" style="background: #ff0059; color: #fff; padding: 8px 15px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem;">Remove Picture</button>
+                <input type="file" id="profilePicInput" accept="image/*" style="display: none;" onchange="updateProfilePicture(event)">
+            </div>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+            <label for="profileName" style="color: #ccc; font-weight: bold;">Name:</label>
+            <input type="text" id="profileName" placeholder="Enter your name" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; margin-top: 5px;">
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+            <label for="profilePhone" style="color: #ccc; font-weight: bold;">Phone:</label>
+            <input type="text" id="profilePhone" placeholder="Enter your phone number" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; margin-top: 5px;">
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+            <label for="profileEmail" style="color: #ccc; font-weight: bold;">Email:</label>
+            <input type="email" id="profileEmail" placeholder="Enter your email" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; margin-top: 5px;" disabled>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+            <label style="color: #ccc; font-weight: bold; display: flex; align-items: center; gap: 10px;">
+                <input type="checkbox" id="smsToggle">
+                Enable SMS Alerts
+            </label>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+            <label for="profileAddress" style="color: #ccc; font-weight: bold;">Address:</label>
+            <textarea id="profileAddress" placeholder="Enter your address" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; margin-top: 5px;"></textarea>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+            <label for="profileBio" style="color: #ccc; font-weight: bold;">Bio:</label>
+            <textarea id="profileBio" placeholder="Tell us about yourself" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; margin-top: 5px;"></textarea>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+            <label for="profileRole" style="color: #ccc; font-weight: bold;">Role:</label>
+            <select id="profileRole" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; margin-top: 5px;">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+        <button type="submit" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #00ffff; color: #000; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);">Save Changes</button>
+    </form>
+    <p id="profileMsg" style="color: lime; display: none; margin-top: 1.5rem; text-align: center;">Profile updated successfully!</p>
+</div>
+<script>
+    function saveProfile(event) {
+        event.preventDefault();
+        const name = document.getElementById('profileName').value.trim();
+        const phone = document.getElementById('profilePhone').value.trim();
+        const address = document.getElementById('profileAddress').value.trim();
+        const bio = document.getElementById('profileBio').value.trim();
+        const role = document.getElementById('profileRole').value;
+        const smsAlerts = document.getElementById('smsToggle').checked;
+
+        const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+        const updatedUser = { ...currentUser, name, phone, address, bio, role, smsAlerts };
+
+        localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+
+        const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+        const updatedUsers = users.map(user => user.email === currentUser.email ? updatedUser : user);
+        localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
+
+        document.getElementById('profileMsg').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('profileMsg').style.display = 'none';
+            closePopup('profileModal');
+        }, 1500);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+        document.getElementById('profileName').value = currentUser.name || '';
+        document.getElementById('profilePhone').value = currentUser.phone || '';
+        document.getElementById('profileEmail').value = currentUser.email || '';
+        document.getElementById('profileAddress').value = currentUser.address || '';
+        document.getElementById('profileBio').value = currentUser.bio || '';
+        document.getElementById('profileRole').value = currentUser.role || 'user';
+        document.getElementById('smsToggle').checked = currentUser.smsAlerts || false;
+        document.getElementById('profilePic').src = currentUser.profilePic || 'https://via.placeholder.com/100';
+    });
+</script>
+
+<script>
+    function removeProfilePicture() {
+        const defaultImage = 'https://via.placeholder.com/100';
+        document.getElementById('profilePic').src = defaultImage;
+        updateProfileImage(defaultImage);
+    }
+</script>
+<!-- Removed Admin Panel Modal and merged functionality into Edit Profile -->
+<script>
+    function saveProfile(event) {
+        event.preventDefault();
+        const name = document.getElementById('profileName').value.trim();
+        const phone = document.getElementById('profilePhone').value.trim();
+        const address = document.getElementById('profileAddress').value.trim();
+        const bio = document.getElementById('profileBio').value.trim();
+        const role = document.getElementById('profileRole').value;
+        const smsAlerts = document.getElementById('smsToggle').checked;
+
+        const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+        if (!currentUser) {
+            alert('No user is currently logged in.');
+            return;
+        }
+
+        const updatedUsers = users.map(user => {
+            if (user.email === currentUser.email) {
+                return { ...user, name, phone, address, bio, role, smsAlerts };
+            }
+            return user;
+        });
+
+        localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
+        currentUser = { ...currentUser, name, phone, address, bio, role, smsAlerts };
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+        document.getElementById('profileMsg').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('profileMsg').style.display = 'none';
+            closePopup('profileModal');
+        }, 1500);
+    }
+
+    function updateProfilePicture(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const newImageUrl = e.target.result;
+                document.getElementById('profilePic').src = newImageUrl;
+                updateProfileImage(newImageUrl);
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function updateProfileImage(newImageUrl) {
+        const profileImage = document.getElementById('profileImage');
+        const dropdownProfileImage = document.getElementById('dropdownProfileImage');
+        const defaultImage = 'https://via.placeholder.com/60';
+
+        profileImage.src = newImageUrl || defaultImage;
+        dropdownProfileImage.src = newImageUrl || defaultImage;
+
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (currentUser) {
+            currentUser.profilePic = newImageUrl || defaultImage;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        }
+    }
+
+    function removeProfilePicture() {
+        const defaultImage = 'https://via.placeholder.com/100';
+        document.getElementById('profilePic').src = defaultImage;
+        updateProfileImage(defaultImage);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+        document.getElementById('profileName').value = currentUser.name || '';
+        document.getElementById('profilePhone').value = currentUser.phone || '';
+        document.getElementById('profileEmail').value = currentUser.email || '';
+        document.getElementById('profileAddress').value = currentUser.address || '';
+        document.getElementById('profileBio').value = currentUser.bio || '';
+        document.getElementById('profileRole').value = currentUser.role || 'user';
+        document.getElementById('smsToggle').checked = currentUser.smsAlerts || false;
+        document.getElementById('profilePic').src = currentUser.profilePic || 'https://via.placeholder.com/100';
+    });
+</script>
+<!-- Removed duplicate script block to avoid redundancy -->
+
 <div id="filterSection" style="display: none;">
     <div class="filter-container" style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; padding: 1rem; background: var(--card-bg); border-radius: 10px; box-shadow: var(--neon-glow);">
       <!-- Location Tracking -->
-      <div class="location-tracking-container" style="flex: 1; text-align: center;">
-        <button onclick="trackLocation()" style="padding: 10px 20px; border-radius: 8px; background: var(--accent-color); color: #fff; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">📍 Locate Me</button>
-        <p id="location-status-1" style="margin-top: 10px; color: var(--text-color); font-size: 0.9rem;">Location status will appear here.</p>
-      </div>
-  
+    <div class="location-tracking-container" style="position: absolute; bottom: 10px; left: 10px; z-index: 1000; background: rgba(0, 0, 0, 0.7); padding: 10px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">
+        <button onclick="trackLocation()" style="padding: 10px 20px; border-radius: 8px; background: var(--accent-color); color: #fff; font-weight: bold; cursor: pointer;">📍 Locate Me</button>
+        <p id="location-status-1" style="margin-top: 10px; color: #fff; font-size: 0.9rem;">Location status will appear here.</p>
+    </div>
       <!-- Destination Filter -->
       <div class="destination-filter-container" style="flex: 1; text-align: center;">
         <label for="destination-filter" style="color: var(--text-color); font-weight: bold; margin-right: 10px;">Filter by Destination:</label>
@@ -148,6 +381,7 @@
                         <th style="border: 1px solid #ccc; padding: 8px; text-align: left;">Start</th>
                         <th style="border: 1px solid #ccc; padding: 8px; text-align: left;">Destination</th>
                         <th style="border: 1px solid #ccc; padding: 8px; text-align: left;">Timings</th>
+                        <th style="border: 1px solid #ccc; padding: 8px; text-align: left;">Action</th>
                     `;
                     table.appendChild(headerRow);
 
@@ -158,6 +392,9 @@
                             <td style="border: 1px solid #ccc; padding: 8px;">${bus.start}</td>
                             <td style="border: 1px solid #ccc; padding: 8px;">${bus.destination}</td>
                             <td style="border: 1px solid #ccc; padding: 8px;">${bus.time}</td>
+                            <td style="border: 1px solid #ccc; padding: 8px;">
+                                <button onclick="addTracking('${bus.id}')" style="padding: 5px 10px; border-radius: 5px; background: var(--accent-color); color: #fff; border: none; cursor: pointer;">Track</button>
+                            </td>
                         `;
                         table.appendChild(row);
                     });
@@ -346,101 +583,135 @@
     <h2>Notification History</h2>
     <ul id="historyList" style="list-style-type: none;"></ul>
 </div>
-
-<div class="modal" id="loginModal" style="background: linear-gradient(135deg, #1e1e1e, #2a2a2a); color: #fff; padding: 2rem; border-radius: 15px; box-shadow: 0 0 25px rgba(0, 255, 255, 0.7);">
-    <button class="close-btn" onclick="closePopup('loginModal')" style="position: absolute; top: 15px; right: 15px; background: linear-gradient(135deg, #ff0059, #ff4081); color: #fff; border: none; border-radius: 50%; width: 35px; height: 35px; font-size: 18px; cursor: pointer; box-shadow: 0 0 20px rgba(255, 0, 89, 0.8);">×</button>
-    <h2 style="text-align: center; color: var(--primary-color); text-shadow: 0 0 15px var(--primary-color); font-size: 1.8rem;">Login</h2>
-    <form onsubmit="handleLogin(event)" style="margin-top: 1.5rem;">
-        <div class="input-container" style="margin-bottom: 1.5rem;">
-            <input type="text" id="loginEmail" required placeholder="Email or Phone" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; font-size: 1rem;" />
+<div class="modal" id="loginModal">
+    <button class="close-btn" onclick="closePopup('loginModal')">×</button>
+    <h2 class="modal-title">🔑 Login</h2>
+    <form onsubmit="handleLogin(event)" class="modal-form">
+        <div class="input-container">
+            <input type="text" id="loginEmail" required placeholder="📧 Email or Phone" class="input-field" />
         </div>
-        <div class="input-container" style="margin-bottom: 1.5rem;">
-            <input type="password" id="loginPassword" required placeholder="Password" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; font-size: 1rem;" />
+        <div class="input-container">
+            <input type="password" id="loginPassword" required placeholder="🔒 Password" class="input-field" />
         </div>
-        <label style="display: flex; align-items: center; gap: 10px; color: #ccc; font-size: 0.9rem; margin-bottom: 1rem;">
+        <label class="checkbox-label">
             <input type="checkbox" id="showLoginPasswordToggle" onclick="toggleLoginPasswordVisibility()" />
             Show Password
         </label>
-        <button type="submit" id="loginButton" style="width: 100%; padding: 12px; border-radius: 10px; background-color: var(--accent-color); color: #fff; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);">Login</button>
+        <button type="submit" id="loginButton" class="modal-button">Login</button>
+        <p id="loginError" class="error-message">❌ Invalid email or password. Please try again.</p>
     </form>
-    <p id="loginError" style="color: red; display: none; margin-top: 1.5rem; text-align: center; font-size: 0.9rem;">Invalid email or password. Please try again.</p>
+    <div class="modal-footer">
+        <p>Forgot your password? 
+            <button onclick="closePopup('loginModal'); openPopup('forgotPasswordModal');" class="link-button">Reset Password</button>
+        </p>
+        <p>Don't have an account? 
+            <button onclick="closePopup('loginModal'); openPopup('registerModal');" class="link-button">Register</button>
+        </p>
+    </div>
 </div>
-
-<div class="modal" id="registerModal" style="background: linear-gradient(135deg, #1e1e1e, #2a2a2a); color: #fff; padding: 2rem; border-radius: 15px; box-shadow: 0 0 25px rgba(0, 255, 255, 0.7);">
-    <button class="close-btn" onclick="closePopup('registerModal')" style="position: absolute; top: 15px; right: 15px; background: linear-gradient(135deg, #ff0059, #ff4081); color: #fff; border: none; border-radius: 50%; width: 35px; height: 35px; font-size: 18px; cursor: pointer; box-shadow: 0 0 20px rgba(255, 0, 89, 0.8);">×</button>
-    <h2 style="text-align: center; color: var(--primary-color); text-shadow: 0 0 15px var(--primary-color); font-size: 1.8rem;">Register</h2>
-    <form id="registerForm" onsubmit="handleRegister(event)" style="margin-top: 1.5rem;">
-        <input type="text" id="registerName" required placeholder="Name" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; margin-bottom: 1.5rem; font-size: 1rem;" />
-        <input type="text" id="registerPhone" required placeholder="Phone" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; margin-bottom: 1.5rem; font-size: 1rem;" />
-        <input type="email" id="registerEmail" required placeholder="Email" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; margin-bottom: 1.5rem; font-size: 1rem;" />
-        <div class="input-container" style="margin-bottom: 1.5rem;">
-            <input type="password" id="registerPassword" required placeholder="Password" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; font-size: 1rem;" />
-            <label style="display: flex; align-items: center; gap: 10px; color: #ccc; font-size: 0.9rem; margin-top: 10px;">
+<div class="modal" id="registerModal">
+    <button class="close-btn" onclick="closePopup('registerModal')">×</button>
+    <h2 class="modal-title">📝 Register</h2>
+    <form id="registerForm" onsubmit="handleRegister(event)" class="modal-form">
+        <input type="text" id="registerName" required placeholder="👤 Name" class="input-field" />
+        <input type="text" id="registerPhone" required placeholder="📞 Phone" class="input-field" />
+        <input type="email" id="registerEmail" required placeholder="📧 Email" class="input-field" />
+        <div class="input-container">
+            <input type="password" id="registerPassword" required placeholder="🔒 Password" class="input-field" />
+            <label class="checkbox-label">
                 <input type="checkbox" id="showRegisterPasswordToggle" onclick="toggleRegisterPasswordVisibility()" />
                 Show Password
             </label>
         </div>
-        <div class="input-container" style="margin-bottom: 1.5rem;">
-            <input type="password" id="registerConfirmPassword" required placeholder="Confirm Password" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; font-size: 1rem;" />
+        <div class="input-container">
+            <input type="password" id="registerConfirmPassword" required placeholder="🔒 Confirm Password" class="input-field" />
         </div>
-        <button type="button" onclick="sendVerificationCode()" style="width: 100%; padding: 12px; border-radius: 10px; background-color: var(--primary-color); color: #000; font-weight: bold; font-size: 1rem; cursor: pointer; margin-bottom: 1.5rem; box-shadow: 0 0 15px rgba(255, 0, 89, 0.7);">Send Verification Code</button>
-        <input type="text" id="verificationCode" required placeholder="Enter Verification Code" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; margin-bottom: 1.5rem; font-size: 1rem;" />
-        <button type="submit" id="registerButton" style="width: 100%; padding: 12px; border-radius: 10px; background-color: var(--accent-color); color: #fff; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);">Register</button>
-        <p id="registerMsg" style="color: lime; display: none; margin-top: 1.5rem; text-align: center; font-size: 0.9rem; width: 100%;">Registration successful! Please log in.</p>
+        <button type="button" onclick="sendVerificationCode()" class="modal-button">📩 Send Verification Code</button>
+        <input type="text" id="verificationCode" required placeholder="🔑 Enter Verification Code" class="input-field" />
+        <button type="submit" id="registerButton" class="modal-button">Register</button>
+        <p id="registerMsg" class="success-message">✅ Registration successful! Please log in.</p>
     </form>
-    <p id="registerError" style="color: red; display: none; margin-top: 1.5rem; text-align: center; font-size: 0.9rem;">Registration failed. Please try again.</p>
-</div>
-<!-- Admin Panel Modal -->
-<div class="modal" id="adminPanelModal" style="background: linear-gradient(135deg, #1e1e1e, #2a2a2a); color: #fff; padding: 1.5rem; border-radius: 12px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); width: 90%; max-width: 700px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-    <button class="close-btn" onclick="closePopup('adminPanelModal')" style="position: absolute; top: 10px; right: 10px; background: linear-gradient(135deg, #ff0059, #ff4081); color: #fff; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 16px; cursor: pointer; box-shadow: 0 0 15px rgba(255, 0, 89, 0.7);">×</button>
-    <h2 style="text-align: center; color: var(--primary-color); text-shadow: 0 0 10px var(--primary-color);">Admin Panel</h2>
-
-    <div id="adminUserList" style="max-height: 400px; overflow-y: auto; margin-top: 1rem;">
-        <!-- Dynamic user list injected by JS -->
+    <p id="registerError" class="error-message">❌ Registration failed. Please try again.</p>
+    <div class="modal-footer">
+        <p>Already have an account? 
+            <button onclick="closePopup('registerModal'); openPopup('loginModal');" class="link-button">Login</button>
+        </p>
     </div>
-
-    <p id="adminMsg" style="color: lime; display: none; margin-top: 1rem; text-align: center;">User updated successfully!</p>
 </div>
-
-<style>
-</style>
-
+<div class="modal" id="forgotPasswordModal">
+    <button class="close-btn" onclick="closePopup('forgotPasswordModal')">×</button>
+    <h2 class="modal-title">🔒 Forgot Password</h2>
+    <form onsubmit="handleForgotPassword(event)" class="modal-form">
+        <div class="input-container">
+            <input type="email" id="forgotPasswordEmail" required placeholder="📧 Enter your registered email" class="input-field" />
+        </div>
+        <button type="submit" class="modal-button">Reset Password</button>
+    </form>
+    <p id="forgotPasswordMsg" class="success-message">✅ Password reset instructions sent to your email.</p>
+    <p id="forgotPasswordError" class="error-message">❌ Failed to send reset instructions. Please try again.</p>
+</div>
 <script>
-function openAdminPanel() {
+    function removeProfilePic(index) {
+        const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+        users[index].profilePic = 'https://via.placeholder.com/100'; // Reset to default profile picture
+        localStorage.setItem('registeredUsers', JSON.stringify(users));
+
+        document.getElementById(`profilePic-${index}`).src = 'https://via.placeholder.com/100';
+    }
+
+    function updateProfilePic(event, index) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+                users[index].profilePic = e.target.result;
+                localStorage.setItem('registeredUsers', JSON.stringify(users));
+
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (currentUser?.email === users[index].email) {
+                    localStorage.setItem('currentUser', JSON.stringify(users[index]));
+                }
+
+                document.getElementById(`profilePic-${index}`).src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function saveUserUpdate(index) {
+        const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+
+        const nameInput = document.querySelector(`.adminInput[data-index="${index}"][data-field="name"]`);
+        const phoneInput = document.querySelector(`.adminInput[data-index="${index}"][data-field="phone"]`);
+        const smsCheckbox = document.querySelector(`.adminCheckbox[data-index="${index}"][data-field="smsAlerts"]`);
+
+        if (nameInput && phoneInput && smsCheckbox) {
+            users[index].name = nameInput.value.trim();
+            users[index].phone = phoneInput.value.trim();
+            users[index].smsAlerts = smsCheckbox.checked;
+
+            localStorage.setItem('registeredUsers', JSON.stringify(users));
+
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser?.email === users[index].email) {
+                localStorage.setItem('currentUser', JSON.stringify(users[index]));
+            }
+
+            const msg = document.getElementById('adminMsg');
+            msg.style.display = 'block';
+            setTimeout(() => {
+                msg.style.display = 'none';
+                closePopup('adminPanelModal'); // Close the modal after saving
+            }, 1500);
+        }
+    }
+function removeProfilePic(index) {
     const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
-    const userList = document.getElementById('adminUserList');
-    userList.innerHTML = ''; // Clear previous list
+    users[index].profilePic = 'https://via.placeholder.com/100'; // Reset to default profile picture
+    localStorage.setItem('registeredUsers', JSON.stringify(users));
 
-    users.forEach((user, index) => {
-        const userCard = document.createElement('div');
-        userCard.style.cssText = 'background: #2e2e2e; margin-bottom: 1rem; padding: 1rem; border-radius: 8px; box-shadow: 0 0 10px rgba(0,255,255,0.3);';
-
-        userCard.innerHTML = `
-            <strong style="color: var(--primary-color);">User ${index + 1}</strong><br>
-            <div class="profile-pic-container">
-                <img src="${user.profilePic || 'default-profile.png'}" alt="Profile Picture" id="profilePic-${index}">
-                <button class="edit-button" onclick="document.getElementById('fileInput-${index}').click()" style="background: transparent; box-shadow: none;">✎</button>
-                <input type="file" id="fileInput-${index}" accept="image/*" style="display: none;" onchange="updateProfilePic(event, ${index})">
-            </div>
-            <label style="display:block;margin:5px 0;color:#aaa;">Name:
-                <input type="text" value="${user.name}" data-index="${index}" data-field="name" class="adminInput" style="width: 100%; padding: 5px; margin-top: 5px; background: #111; color: #fff; border: 1px solid #555; border-radius: 6px;">
-            </label>
-            <label style="display:block;margin:5px 0;color:#aaa;">Phone:
-                <input type="text" value="${user.phone}" data-index="${index}" data-field="phone" class="adminInput" style="width: 100%; padding: 5px; margin-top: 5px; background: #111; color: #fff; border: 1px solid #555; border-radius: 6px;">
-            </label>
-            <label style="display:block;margin:5px 0;color:#aaa;">Email:
-                <input type="email" value="${user.email}" disabled style="width: 100%; padding: 5px; margin-top: 5px; background: #333; color: #ccc; border: none; border-radius: 6px;">
-            </label>
-            <label style="display: flex; align-items: center; gap: 5px; color: #aaa; margin-top: 10px;">
-                <input type="checkbox" ${user.smsAlerts ? 'checked' : ''} data-index="${index}" data-field="smsAlerts" class="adminCheckbox"> Enable SMS Alerts
-            </label>
-            <button onclick="saveUserUpdate(${index})" style="margin-top: 10px; background-color: var(--accent-color); color: #fff; padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">Save</button>
-        `;
-
-        userList.appendChild(userCard);
-    });
-
-    openPopup('adminPanelModal');
+    document.getElementById(`profilePic-${index}`).src = 'https://via.placeholder.com/100';
 }
 
 function updateProfilePic(event, index) {
@@ -491,8 +762,6 @@ function saveUserUpdate(index) {
     }
 }
 </script>
-
-    
 <div class="modal" id="favoritesModal">
     <button class="close-btn" onclick="closePopup('favoritesModal')">×</button>
     <h2>Favorites</h2>
@@ -574,6 +843,45 @@ function saveUserUpdate(index) {
         <button class="reset-btn" onclick="resetSettings()">♻️ Reset to Default</button>
     </div>
 </div>
+<div class="modal" id="helpModal">
+    <button class="close-btn" onclick="closePopup('helpModal')">×</button>
+    <h2>❓ Help & FAQ</h2>
+    <div class="help-content">
+        <h3>How to Use the Smart Bus Tracker?</h3>
+        <p>Our Smart Bus Tracker helps you locate buses in real-time, filter by destination, and track your favorite routes. Simply log in to access all features.</p>
+        
+        <h3>Frequently Asked Questions</h3>
+        <ul>
+            <li><strong>Q: How do I track a bus?</strong>
+                <p>A: Click on the "Bus Info" button, select a bus, and click "Track" to see its location on the map.</p>
+            </li>
+            <li><strong>Q: How do I enable SMS alerts?</strong>
+                <p>A: Go to "Settings" and enable SMS alerts. You can also configure alerts for your favorite routes.</p>
+            </li>
+            <li><strong>Q: Can I use voice search?</strong>
+                <p>A: Yes! Click on the "🎤 Voice Search" button and say your destination to find buses.</p>
+            </li>
+            <li><strong>Q: How do I reset my password?</strong>
+                <p>A: Click on "Forgot Password" in the login modal and follow the instructions to reset your password.</p>
+            </li>
+        </ul>
+        
+        <h3>Contact Us</h3>
+        <p>If you have further questions, feel free to reach out to us at <a href="mailto:support@smartbustracker.com">support@smartbustracker.com</a>.</p>
+    </div>
+</div>
+
+<script>
+    // Function to open the Help Modal
+    function openHelpModal() {
+        openPopup('helpModal');
+    }
+
+    // Function to close the Help Modal
+    function closeHelpModal() {
+        closePopup('helpModal');
+    }
+</script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const busData = [
@@ -907,7 +1215,12 @@ function trackLocation() {
                 if (!response.ok) throw new Error('Failed to fetch address');
                 const data = await response.json();
                 const address = data.display_name || 'Unknown Location';
-                document.getElementById('location-status-1').innerHTML += `<br><strong>Address:</strong> ${address}`;
+
+                const locationStatus = document.getElementById('location-status-1');
+                if (!locationStatus.dataset.addressDisplayed) {
+                    locationStatus.innerHTML += `<br><strong>Address:</strong> ${address}`;
+                    locationStatus.dataset.addressDisplayed = "true"; // Mark as displayed
+                }
 
                 const userMarker = L.marker([latitude, longitude], { icon: L.icon({
                     iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
@@ -920,7 +1233,11 @@ function trackLocation() {
                 map.setView([latitude, longitude], 14);
                 logEvent(`Tracked Location: Lat ${latitude.toFixed(4)}, Lon ${longitude.toFixed(4)}, Address: ${address}`);
             } catch (error) {
-                document.getElementById('location-status-1').innerHTML += `<br><strong>Address:</strong> Unable to fetch address`;
+                const locationStatus = document.getElementById('location-status-1');
+                if (!locationStatus.dataset.addressDisplayed) {
+                    locationStatus.innerHTML += `<br><strong>Address:</strong> Unable to fetch address`;
+                    locationStatus.dataset.addressDisplayed = "true"; // Mark as displayed
+                }
                 console.error('Error fetching address:', error);
                 logEvent('Failed to fetch address');
             }
@@ -974,8 +1291,8 @@ function loadBuses(filteredBuses = busData) {
 // Initial load of all buses
 loadBuses();
 </script>
-<script>
 
+<script>
 const usersKey = 'registeredUsers';
 
 function toggleLoginPasswordVisibility() {
@@ -1035,8 +1352,10 @@ function handleRegister(event) {
         return;
     }
 
-    users.push({ name, phone, email, password: pwd, smsAlerts: false });
+    const newUser = { name, phone, email, password: pwd, smsAlerts: false };
+    users.push(newUser);
     localStorage.setItem(usersKey, JSON.stringify(users));
+
     success.textContent = "Registration successful! Please log in.";
     success.style.display = 'block';
     showAlert("Registration successful!");
@@ -1098,6 +1417,48 @@ function saveProfile(event) {
     }, 1500);
 }
 
+// Function to open modals
+function openPopup(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.add('show');  // Add show class to display the modal
+    }
+}
+
+// Function to close modals
+function closePopup(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('show');  // Remove show class to hide the modal
+    }
+}
+
+// Helper function to reset error and success messages on modal close
+function resetMessages() {
+    const loginError = document.getElementById('loginError');
+    const registerError = document.getElementById('registerError');
+    const forgotPasswordError = document.getElementById('forgotPasswordError');
+    const registerMsg = document.getElementById('registerMsg');
+    const forgotPasswordMsg = document.getElementById('forgotPasswordMsg');
+
+    loginError.style.display = 'none';
+    registerError.style.display = 'none';
+    forgotPasswordError.style.display = 'none';
+    registerMsg.style.display = 'none';
+    forgotPasswordMsg.style.display = 'none';
+}
+
+// Add event listeners to reset messages when modals are closed
+document.getElementById('loginModal').addEventListener('click', resetMessages);
+document.getElementById('registerModal').addEventListener('click', resetMessages);
+document.getElementById('forgotPasswordModal').addEventListener('click', resetMessages);
+
+// Function to display an alert
+function showAlert(message) {
+    alert(message);
+}
+
+
 function logout() {
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('currentUser');
@@ -1107,13 +1468,6 @@ function logout() {
     }, 2000); // Delay for 2 seconds before redirecting
 }
 
-function openPopup(id) {
-    document.getElementById(id).classList.add('show');
-}
-
-function closePopup(id) {
-    document.getElementById(id).classList.remove('show');
-}
 
 function showAlert(message) {
     const alertBox = document.createElement('div');
