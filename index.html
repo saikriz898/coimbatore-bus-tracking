@@ -27,32 +27,41 @@
                 const currentUser = JSON.parse(localStorage.getItem('currentUser'));
                 navButtons.innerHTML = `
                     <div style="display: flex; align-items: center; position: relative;">
-                        <img src="${currentUser?.profilePic || 'https://via.placeholder.com/60'}" alt="Profile" id="profileImage" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 10px; cursor: pointer;" onclick="openPopup('profileModal')">
-                        <button style="background: none; border: none; font-size: 24px; cursor: pointer;" onclick="toggleDropdown()">⋮</button>
-                        <div class="dropdown-content" id="dropdownMenu" style="display: none; position: absolute; top: 70px; right: 0; background: #333; color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); padding: 10px; z-index: 1000;">
-                            <div style="text-align: center; margin-bottom: 10px;">
-                                <img src="${currentUser?.profilePic || 'https://via.placeholder.com/100'}" alt="Profile" id="dropdownProfileImage" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 10px;">
-                                <p style="margin: 0; font-weight: bold;">👤 ${currentUser?.name || 'User'}</p>
-                                <p style="margin: 0; font-size: 0.9rem; color: #ccc;">📧 ${currentUser?.email || 'N/A'}</p>
+                        <img src="${currentUser?.profilePic || 'https://via.placeholder.com/80'}" alt="Profile" id="profileImage" class="profile-image" onclick="hideNavBar(); openPopup('profileModal')" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 2px solid #555; transition: transform 0.3s ease-in-out;">
+                        <button class="dropdown-toggle" onclick="toggleDropdown()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #ccc; margin-left: 10px;">⋮</button>
+                        <div class="dropdown-content" id="dropdownMenu" style="display: none; position: absolute; top: 70px; right: 0; background: #333; border-radius: 12px; z-index: 1000; overflow: hidden; max-height: 300px; overflow-y: auto;">
+                            <div class="dropdown-header" style="text-align: center; padding: 15px; border-bottom: 1px solid #444;">
+                                <img src="${currentUser?.profilePic || 'https://via.placeholder.com/100'}" alt="Profile" id="dropdownProfileImage" class="dropdown-profile-image" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #666; transition: transform 0.3s ease-in-out;">
+                                <p class="dropdown-name" style="margin: 10px 0 5px; color: #ccc; font-weight: bold; font-size: 1rem;">👤 ${currentUser?.name || 'User'}</p>
+                                <p class="dropdown-email" style="color: #aaa; font-size: 0.8rem;">📧 ${currentUser?.email || 'N/A'}</p>
                             </div>
-                            <button onclick="showModal()" style="display: block; width: 100%; margin-bottom: 5px;">🚌 Bus Info</button>
-                            <button onclick="openPopup('favoritesModal')" style="display: block; width: 100%; margin-bottom: 5px;">⭐ Favorites</button>
-                            <button onclick="openPopup('notificationsModal')" style="display: block; width: 100%; margin-bottom: 5px;">🔔 Notifications</button>
-                            <button onclick="openPopup('smsNotification')" style="display: block; width: 100%; margin-bottom: 5px;">📩 SMS Notification</button>
-                            <button onclick="openPopup('settingsModal')" style="display: block; width: 100%; margin-bottom: 5px;">⚙️ Settings</button>
-                            <button onclick="openPopup('profileModal')" style="display: block; width: 100%; margin-bottom: 5px;">👤 Edit Profile</button>
-                            <button onclick="openPopup('helpModal')" style="display: block; width: 100%; margin-bottom: 5px;">❓ Help</button>
-                            <button onclick="logout()" style="display: block; width: 100%;">🚪 Logout</button>
+                            <div class="dropdown-buttons" style="display: flex; flex-direction: column; gap: 8px; padding: 10px;">
+                                <button onclick="hideNavBar(); openPopup('profileModal')" class="dropdown-button" style="background: #444; color: #ccc; padding: 10px; border-radius: 8px; border: 1px solid #555; cursor: pointer; font-size: 0.9rem;">👤 Edit Profile</button>
+                                <button onclick="hideNavBar(); openPopup('favoritesModal')" class="dropdown-button" style="background: #444; color: #ccc; padding: 10px; border-radius: 8px; border: 1px solid #555; cursor: pointer; font-size: 0.9rem;">⭐ Favorites</button>
+                                <button onclick="hideNavBar(); openPopup('notificationsModal')" class="dropdown-button" style="background: #444; color: #ccc; padding: 10px; border-radius: 8px; border: 1px solid #555; cursor: pointer; font-size: 0.9rem;">🔔 Notifications</button>
+                                <button onclick="hideNavBar(); openPopup('smsNotification')" class="dropdown-button" style="background: #444; color: #ccc; padding: 10px; border-radius: 8px; border: 1px solid #555; cursor: pointer; font-size: 0.9rem;">📩 SMS Notification</button>
+                                <button onclick="hideNavBar(); openPopup('trafficUpdatesModal')" class="dropdown-button" style="background: #444; color: #ccc; padding: 10px; border-radius: 8px; border: 1px solid #555; cursor: pointer; font-size: 0.9rem;">🚦 Traffic Updates</button>
+                                <button onclick="hideNavBar(); showModal()" class="dropdown-button" style="background: #444; color: #ccc; padding: 10px; border-radius: 8px; border: 1px solid #555; cursor: pointer; font-size: 0.9rem;">🚌 Bus Info</button>
+                                <button onclick="hideNavBar(); openPopup('settingsModal')" class="dropdown-button" style="background: #444; color: #ccc; padding: 10px; border-radius: 8px; border: 1px solid #555; cursor: pointer; font-size: 0.9rem;">⚙️ Settings</button>
+                                <button onclick="hideNavBar(); openPopup('helpModal')" class="dropdown-button" style="background: #444; color: #ccc; padding: 10px; border-radius: 8px; border: 1px solid #555; cursor: pointer; font-size: 0.9rem;">❓ Help</button>
+                                <button onclick="hideNavBar(); logout()" class="dropdown-button logout-button" style="background: #550000; color: #ff6666; padding: 10px; border-radius: 8px; border: 1px solid #555; cursor: pointer; font-size: 0.9rem;">🚪 Logout</button>
+                            </div>
                         </div>
                     </div>
                 `;
             } else {
                 navButtons.innerHTML = `
                     <button onclick="openPopup('loginModal')" style="background: var(--primary-color); color: #fff; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer;">Login</button>
-                    <button onclick="openPopup('registerModal')" style="background: var(--accent-color); color: #fff; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer;">Register</button>
+                    <button onclick="openPopup('registerModal')" style="background: var(--primary-color); color: #fff; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer;">Register</button>
                 `;
             }
         });
+        function hideNavBar() {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            if (dropdownMenu) {
+            dropdownMenu.style.display = 'none';
+            }
+        }
 
         function toggleDropdown() {
             const dropdownMenu = document.getElementById('dropdownMenu');
@@ -135,67 +144,54 @@
         }
     </script>
 </nav>
-<div id="profileModal" class="modal" style="background: linear-gradient(135deg, #1e1e1e, #2a2a2a); color: #fff; padding: 2rem; border-radius: 15px; box-shadow: 0 0 25px rgba(0, 255, 255, 0.7);">
-    <button class="close-btn" onclick="closePopup('profileModal')" style="position: absolute; top: 15px; right: 15px; background: linear-gradient(135deg, #ff0059, #ff4081); color: #fff; border: none; border-radius: 50%; width: 35px; height: 35px; font-size: 18px; cursor: pointer; box-shadow: 0 0 20px rgba(255, 0, 89, 0.8);">×</button>
-    <h2 style="text-align: center; color: #00ffff; text-shadow: 0 0 15px #00ffff;">Edit Profile</h2>
+<div id="profileModal" class="modal" style="background: #000; color: #fff; padding: 2rem; border-radius: 15px; box-shadow: 0 0 25px rgba(255, 255, 255, 0.2); font-family: 'Poppins', sans-serif;">
+    <button class="close-btn" onclick="closePopup('profileModal')" style="position: absolute; top: 15px; right: 15px; background: #262626; color: #fff; border: none; border-radius: 50%; width: 35px; height: 35px; font-size: 18px; cursor: pointer; box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);">×</button>
+    <h2 style="text-align: center; color: #fff; font-weight: 600;">Edit Profile</h2>
     <form onsubmit="saveProfile(event)" style="margin-top: 1.5rem;">
         <div class="profile-pic-container" style="text-align: center; margin-bottom: 1.5rem;">
-            <img id="profilePic" src="https://via.placeholder.com/100" alt="Profile Picture" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #00ffff; box-shadow: 0 0 15px rgba(0, 255, 255, 0.7); transition: transform 0.3s;">
+            <img id="profilePic" src="https://via.placeholder.com/100" alt="Profile Picture" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);">
             <div style="margin-top: 10px;">
-                <button type="button" onclick="document.getElementById('profilePicInput').click()" style="background: #00ffff; color: #000; padding: 8px 15px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem;">Change Picture</button>
-                <button type="button" onclick="removeProfilePicture()" style="background: #ff0059; color: #fff; padding: 8px 15px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem;">Remove Picture</button>
+                <button type="button" onclick="document.getElementById('profilePicInput').click()" style="background: #0095f6; color: #fff; padding: 8px 15px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem;">Change Picture</button>
+                <button type="button" onclick="removeProfilePicture()" style="background: #ed4956; color: #fff; padding: 8px 15px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem;">Remove Picture</button>
                 <input type="file" id="profilePicInput" accept="image/*" style="display: none;" onchange="updateProfilePicture(event)">
             </div>
         </div>
         <div style="margin-bottom: 1.5rem;">
-            <label for="profileName" style="color: #ccc; font-weight: bold;">Name:</label>
-            <input type="text" id="profileName" placeholder="Enter your name" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; margin-top: 5px;">
+            <label for="profileName" style="color: #8e8e8e; font-weight: bold;">Name:</label>
+            <input type="text" id="profileName" placeholder="Enter your name" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #262626; color: #fff; border: 1px solid #8e8e8e; margin-top: 5px;">
         </div>
         <div style="margin-bottom: 1.5rem;">
-            <label for="profilePhone" style="color: #ccc; font-weight: bold;">Phone:</label>
-            <input type="text" id="profilePhone" placeholder="Enter your phone number" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; margin-top: 5px;">
+            <label for="profilePhone" style="color: #8e8e8e; font-weight: bold;">Phone:</label>
+            <input type="text" id="profilePhone" placeholder="Enter your phone number" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #262626; color: #fff; border: 1px solid #8e8e8e; margin-top: 5px;">
         </div>
         <div style="margin-bottom: 1.5rem;">
-            <label for="profileEmail" style="color: #ccc; font-weight: bold;">Email:</label>
-            <input type="email" id="profileEmail" placeholder="Enter your email" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; margin-top: 5px;" disabled>
+            <label for="profileEmail" style="color: #8e8e8e; font-weight: bold;">Email:</label>
+            <input type="email" id="profileEmail" placeholder="Enter your email" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #262626; color: #fff; border: 1px solid #8e8e8e; margin-top: 5px;" disabled>
         </div>
         <div style="margin-bottom: 1.5rem;">
-            <label style="color: #ccc; font-weight: bold; display: flex; align-items: center; gap: 10px;">
+            <label style="color: #8e8e8e; font-weight: bold; display: flex; align-items: center; gap: 10px;">
                 <input type="checkbox" id="smsToggle">
                 Enable SMS Alerts
             </label>
         </div>
         <div style="margin-bottom: 1.5rem;">
-            <label for="profileAddress" style="color: #ccc; font-weight: bold;">Address:</label>
-            <textarea id="profileAddress" placeholder="Enter your address" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; margin-top: 5px;"></textarea>
+            <label for="profileBio" style="color: #8e8e8e; font-weight: bold;">Bio:</label>
+            <textarea id="profileBio" placeholder="Tell us about yourself" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #262626; color: #fff; border: 1px solid #8e8e8e; margin-top: 5px;"></textarea>
         </div>
-        <div style="margin-bottom: 1.5rem;">
-            <label for="profileBio" style="color: #ccc; font-weight: bold;">Bio:</label>
-            <textarea id="profileBio" placeholder="Tell us about yourself" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; margin-top: 5px;"></textarea>
-        </div>
-        <div style="margin-bottom: 1.5rem;">
-            <label for="profileRole" style="color: #ccc; font-weight: bold;">Role:</label>
-            <select id="profileRole" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #222; color: #fff; border: 1px solid #555; margin-top: 5px;">
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-            </select>
-        </div>
-        <button type="submit" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #00ffff; color: #000; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);">Save Changes</button>
+        <button type="submit" style="width: 100%; padding: 12px; border-radius: 10px; background-color: #0095f6; color: #fff; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 0 10px rgba(0, 149, 246, 0.5);">Save Changes</button>
     </form>
-    <p id="profileMsg" style="color: lime; display: none; margin-top: 1.5rem; text-align: center;">Profile updated successfully!</p>
+    <p id="profileMsg" style="color: #58c322; display: none; margin-top: 1.5rem; text-align: center;">Profile updated successfully!</p>
 </div>
 <script>
     function saveProfile(event) {
         event.preventDefault();
         const name = document.getElementById('profileName').value.trim();
         const phone = document.getElementById('profilePhone').value.trim();
-        const address = document.getElementById('profileAddress').value.trim();
         const bio = document.getElementById('profileBio').value.trim();
-        const role = document.getElementById('profileRole').value;
         const smsAlerts = document.getElementById('smsToggle').checked;
 
         const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
-        const updatedUser = { ...currentUser, name, phone, address, bio, role, smsAlerts };
+        const updatedUser = { ...currentUser, name, phone, bio, smsAlerts };
 
         localStorage.setItem('currentUser', JSON.stringify(updatedUser));
 
@@ -215,56 +211,15 @@
         document.getElementById('profileName').value = currentUser.name || '';
         document.getElementById('profilePhone').value = currentUser.phone || '';
         document.getElementById('profileEmail').value = currentUser.email || '';
-        document.getElementById('profileAddress').value = currentUser.address || '';
         document.getElementById('profileBio').value = currentUser.bio || '';
-        document.getElementById('profileRole').value = currentUser.role || 'user';
         document.getElementById('smsToggle').checked = currentUser.smsAlerts || false;
         document.getElementById('profilePic').src = currentUser.profilePic || 'https://via.placeholder.com/100';
     });
-</script>
 
-<script>
     function removeProfilePicture() {
         const defaultImage = 'https://via.placeholder.com/100';
         document.getElementById('profilePic').src = defaultImage;
         updateProfileImage(defaultImage);
-    }
-</script>
-<!-- Removed Admin Panel Modal and merged functionality into Edit Profile -->
-<script>
-    function saveProfile(event) {
-        event.preventDefault();
-        const name = document.getElementById('profileName').value.trim();
-        const phone = document.getElementById('profilePhone').value.trim();
-        const address = document.getElementById('profileAddress').value.trim();
-        const bio = document.getElementById('profileBio').value.trim();
-        const role = document.getElementById('profileRole').value;
-        const smsAlerts = document.getElementById('smsToggle').checked;
-
-        const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
-        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
-        if (!currentUser) {
-            alert('No user is currently logged in.');
-            return;
-        }
-
-        const updatedUsers = users.map(user => {
-            if (user.email === currentUser.email) {
-                return { ...user, name, phone, address, bio, role, smsAlerts };
-            }
-            return user;
-        });
-
-        localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
-        currentUser = { ...currentUser, name, phone, address, bio, role, smsAlerts };
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-
-        document.getElementById('profileMsg').style.display = 'block';
-        setTimeout(() => {
-            document.getElementById('profileMsg').style.display = 'none';
-            closePopup('profileModal');
-        }, 1500);
     }
 
     function updateProfilePicture(event) {
@@ -281,37 +236,12 @@
     }
 
     function updateProfileImage(newImageUrl) {
-        const profileImage = document.getElementById('profileImage');
-        const dropdownProfileImage = document.getElementById('dropdownProfileImage');
-        const defaultImage = 'https://via.placeholder.com/60';
-
-        profileImage.src = newImageUrl || defaultImage;
-        dropdownProfileImage.src = newImageUrl || defaultImage;
-
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         if (currentUser) {
-            currentUser.profilePic = newImageUrl || defaultImage;
+            currentUser.profilePic = newImageUrl || 'https://via.placeholder.com/100';
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
         }
     }
-
-    function removeProfilePicture() {
-        const defaultImage = 'https://via.placeholder.com/100';
-        document.getElementById('profilePic').src = defaultImage;
-        updateProfileImage(defaultImage);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
-        document.getElementById('profileName').value = currentUser.name || '';
-        document.getElementById('profilePhone').value = currentUser.phone || '';
-        document.getElementById('profileEmail').value = currentUser.email || '';
-        document.getElementById('profileAddress').value = currentUser.address || '';
-        document.getElementById('profileBio').value = currentUser.bio || '';
-        document.getElementById('profileRole').value = currentUser.role || 'user';
-        document.getElementById('smsToggle').checked = currentUser.smsAlerts || false;
-        document.getElementById('profilePic').src = currentUser.profilePic || 'https://via.placeholder.com/100';
-    });
 </script>
 <!-- Removed duplicate script block to avoid redundancy -->
 
@@ -583,9 +513,9 @@
     <h2>Notification History</h2>
     <ul id="historyList" style="list-style-type: none;"></ul>
 </div>
-<div class="modal" id="loginModal">
+<div class="modal" id="loginModal" style="background: #1a1a1a; color: #fff; padding: 2rem; border-radius: 15px; box-shadow: 0 0 25px rgba(255, 255, 255, 0.2); font-family: 'Poppins', sans-serif; display: none;">
     <button class="close-btn" onclick="closePopup('loginModal')">×</button>
-    <h2 class="modal-title">🔑 Login</h2>
+    <h2 class="modal-title">🔑 Login to SmartBus</h2>
     <form onsubmit="handleLogin(event)" class="modal-form">
         <div class="input-container">
             <input type="text" id="loginEmail" required placeholder="📧 Email or Phone" class="input-field" />
@@ -609,35 +539,57 @@
         </p>
     </div>
 </div>
+<!-- Register Modal -->
 <div class="modal" id="registerModal">
     <button class="close-btn" onclick="closePopup('registerModal')">×</button>
     <h2 class="modal-title">📝 Register</h2>
+  
     <form id="registerForm" onsubmit="handleRegister(event)" class="modal-form">
-        <input type="text" id="registerName" required placeholder="👤 Name" class="input-field" />
-        <input type="text" id="registerPhone" required placeholder="📞 Phone" class="input-field" />
-        <input type="email" id="registerEmail" required placeholder="📧 Email" class="input-field" />
-        <div class="input-container">
-            <input type="password" id="registerPassword" required placeholder="🔒 Password" class="input-field" />
-            <label class="checkbox-label">
-                <input type="checkbox" id="showRegisterPasswordToggle" onclick="toggleRegisterPasswordVisibility()" />
-                Show Password
-            </label>
-        </div>
-        <div class="input-container">
-            <input type="password" id="registerConfirmPassword" required placeholder="🔒 Confirm Password" class="input-field" />
-        </div>
-        <button type="button" onclick="sendVerificationCode()" class="modal-button">📩 Send Verification Code</button>
-        <input type="text" id="verificationCode" required placeholder="🔑 Enter Verification Code" class="input-field" />
-        <button type="submit" id="registerButton" class="modal-button">Register</button>
+      <input type="text" id="registerName"  placeholder="👤 Name" class="input-field" required>
+      <input type="text" id="registerPhone" placeholder="📞 Phone" class="input-field" required>
+      <input type="email" id="registerEmail" placeholder="📧 Email" class="input-field" required>
+  
+      <div class="input-container">
+        <input type="password" id="registerPassword" placeholder="🔒 Password" class="input-field" required>
+        <label class="checkbox-label">
+          <input type="checkbox" id="showRegisterPasswordToggle" onclick="toggleRegisterPasswordVisibility()">
+          Show Password
+        </label>
+      </div>
+  
+      <div class="input-container">
+        <input type="password" id="registerConfirmPassword" placeholder="🔒 Confirm Password" class="input-field" required>
+      </div>
+  
+      <!-- Send‑code button -->
+    <button type="button" onclick="sendVerificationCode();" class="modal-button">
+      📩 Send Verification Code
+    </button>
+    
+  
+      <!-- Hidden until code is sent -->
+      <div id="verificationSection" style="display:none;">
+        <input type="text" id="verificationCode" placeholder="🔑 Enter Verification Code"
+               class="input-field" required>
+        <button type="submit" id="registerButton" class="modal-button">
+          Register
+        </button>
         <p id="registerMsg" class="success-message">✅ Registration successful! Please log in.</p>
+      </div>
     </form>
+  
     <p id="registerError" class="error-message">❌ Registration failed. Please try again.</p>
+  
     <div class="modal-footer">
-        <p>Already have an account? 
-            <button onclick="closePopup('registerModal'); openPopup('loginModal');" class="link-button">Login</button>
-        </p>
+      <p>Already have an account?
+        <button class="link-button"
+                onclick="closePopup('registerModal'); openPopup('loginModal');">
+          Login
+        </button>
+      </p>
     </div>
-</div>
+  </div>
+
 <div class="modal" id="forgotPasswordModal">
     <button class="close-btn" onclick="closePopup('forgotPasswordModal')">×</button>
     <h2 class="modal-title">🔒 Forgot Password</h2>
@@ -882,7 +834,81 @@ function saveUserUpdate(index) {
         closePopup('helpModal');
     }
 </script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    const trafficMarkers = {};
+
+    function fetchTrafficUpdatesForBuses() {
+        const trafficInfo = document.getElementById('trafficInfo');
+        trafficInfo.innerHTML = "Fetching real-time traffic updates for all buses...";
+
+        // Simulate real-time traffic updates for all buses
+        setInterval(() => {
+            busData.forEach(bus => {
+                // Randomly assign traffic status to each bus
+                const statuses = ["Heavy Traffic", "Moderate Traffic", "Clear"];
+                bus.trafficStatus = statuses[Math.floor(Math.random() * statuses.length)];
+
+                // Update traffic markers on the map
+                if (!trafficMarkers[bus.id]) {
+                    const marker = L.marker([bus.lat, bus.lon], {
+                        icon: L.icon({
+                            iconUrl: bus.trafficStatus === "Heavy Traffic"
+                                ? "https://cdn-icons-png.flaticon.com/512/190/190406.png"
+                                : bus.trafficStatus === "Moderate Traffic"
+                                ? "https://cdn-icons-png.flaticon.com/512/190/190411.png"
+                                : "https://cdn-icons-png.flaticon.com/512/190/190414.png",
+                            iconSize: [30, 30],
+                            iconAnchor: [15, 30]
+                        })
+                    })
+                        .addTo(map)
+                        .bindPopup(`<strong>Bus ${bus.id}</strong><br>Route: ${bus.start} → ${bus.destination}<br>Status: ${bus.trafficStatus}`);
+                    trafficMarkers[bus.id] = marker;
+                } else {
+                    trafficMarkers[bus.id]
+                        .setIcon(L.icon({
+                            iconUrl: bus.trafficStatus === "Heavy Traffic"
+                                ? "https://cdn-icons-png.flaticon.com/512/190/190406.png"
+                                : bus.trafficStatus === "Moderate Traffic"
+                                ? "https://cdn-icons-png.flaticon.com/512/190/190411.png"
+                                : "https://cdn-icons-png.flaticon.com/512/190/190414.png",
+                            iconSize: [30, 30],
+                            iconAnchor: [15, 30]
+                        }))
+                        .setPopupContent(`<strong>Bus ${bus.id}</strong><br>Route: ${bus.start} → ${bus.destination}<br>Status: ${bus.trafficStatus}`);
+                }
+            });
+
+            // Update traffic info in the UI
+            const updates = busData.map(bus => `<strong>Bus ${bus.id}:</strong> ${bus.trafficStatus}`).join('<br>');
+            trafficInfo.innerHTML = updates;
+        }, 1000); // Update every 1 second for real-time updates
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        if (!isLoggedIn) {
+            const navButtons = document.querySelector('.nav-buttons');
+            const trafficModuleButton = document.createElement('button');
+            trafficModuleButton.textContent = "🚦 Traffic Updates";
+            trafficModuleButton.style = "background: var(--primary-color); color: #fff; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer;";
+            trafficModuleButton.onclick = () => openPopup('trafficUpdatesModal');
+            navButtons.appendChild(trafficModuleButton);
+
+            fetchTrafficUpdatesForBuses();
+        }
+    });
+</script>
+
+<!-- Traffic Updates Modal -->
+<div class="modal" id="trafficUpdatesModal" style="display: none;">
+    <button class="close-btn" onclick="closePopup('trafficUpdatesModal')">×</button>
+    <h2>🚦 Real-Time Traffic Updates</h2>
+    <p id="trafficInfo">Fetching traffic updates...</p>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script></div>
 <script>
 const busData = [
     { id: '257', lat: 11.0183, lon: 76.9748, time: '6:30 AM, 8:00 AM, 10:30 AM', start: 'Ondipudur', destination: 'Gandhipuram' },
@@ -1151,58 +1177,6 @@ function loadHistory() {
     });
     logEvent('Loaded Notification History');
 }
-function startSimulation() {
-    const selectedDestination = document.getElementById('destination-filter').value;
-    if (!selectedDestination) {
-        alert("Please select a destination to start the simulation!");
-        return;
-    }
-
-    if (simulationInterval) {
-        alert("Simulation is already running!");
-        return;
-    }
-
-    simulationData = JSON.parse(JSON.stringify(busData)); // Copy current bus data
-
-    simulationInterval = setInterval(() => {
-        simulationData.forEach(bus => {
-            if (bus.destination === selectedDestination) { // Only simulate for buses with the selected destination
-                const latShift = (Math.random() - 0.005) * 0.01; // Larger shift for more noticeable movement
-                const lonShift = (Math.random() - 0.005) * 0.01;
-                bus.lat += latShift;
-                bus.lon += lonShift;
-            }
-        });
-
-        loadBuses(simulationData);
-    }, 1000); // update every 1 second for faster simulation
-
-    alert(`Simulation started for buses heading to ${selectedDestination}!`);
-}
-
-function stopSimulation() {
-    if (!simulationInterval) {
-        alert("No simulation is running!");
-        return;
-    }
-
-    clearInterval(simulationInterval);
-    simulationInterval = null;
-    alert("Simulation stopped!");
-}
-
-function resetSimulation() {
-    if (simulationInterval) {
-        clearInterval(simulationInterval);
-        simulationInterval = null;
-    }
-
-    simulationData = JSON.parse(JSON.stringify(busData)); // Reset to original bus data
-    loadBuses(simulationData);
-    alert("Simulation reset for all buses!");
-}
-
 function trackLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async pos => {
@@ -1306,13 +1280,90 @@ function toggleRegisterPasswordVisibility() {
     const show = document.getElementById('showRegisterPasswordToggle').checked;
     pwd.type = confirm.type = show ? 'text' : 'password';
 }
-
 function sendVerificationCode() {
+    const nameInput = document.getElementById('registerName');
+    const phoneInput = document.getElementById('registerPhone');
+    const emailInput = document.getElementById('registerEmail');
+    const passwordInput = document.getElementById('registerPassword');
+    const confirmPasswordInput = document.getElementById('registerConfirmPassword');
+    const verificationSection = document.getElementById('verificationSection');
+
+    if (!nameInput || !phoneInput || !emailInput || !passwordInput || !confirmPasswordInput || !verificationSection) {
+        console.error("One or more required input elements are missing in the DOM.");
+        return;
+    }
+
+    const name = nameInput.value.trim();
+    const phone = phoneInput.value.trim();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+    const confirmPassword = confirmPasswordInput.value.trim();
+
+    // Validate all fields
+    if (!name || !phone || !email || !password || !confirmPassword) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    // Validate phone number and email format
+    const phoneRegex = /^\d{10}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!phoneRegex.test(phone)) {
+        alert("Please enter a valid 10-digit phone number.");
+        return;
+    }
+
+    if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address.");
+        return;
+    }
+
+    // Validate password strength
+    if (password.length < 8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password) || !/[!@#$%^&*]/.test(password)) {
+        alert("Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.");
+        return;
+    }
+
+    // Validate password confirmation
+    if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+    }
+
+    // Show the OTP section if validations pass
+    verificationSection.style.display = 'block';
+
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     localStorage.setItem('verificationCode', code);
-    alert("Verification Code (simulated): " + code);
-}
 
+    // Display the verification code in a popup modal
+    const popup = document.createElement('div');
+    popup.style.position = 'fixed';
+    popup.style.top = '50%';
+    popup.style.left = '50%';
+    popup.style.transform = 'translate(-50%, -50%)';
+    popup.style.backgroundColor = '#add8e6'; // Changed background color to LightBlue
+    popup.style.padding = '20px';
+    popup.style.borderRadius = '10px';
+    popup.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+    popup.style.zIndex = '1000';
+    popup.innerHTML = `
+        <p style="font-size: 1.2rem; margin-bottom: 10px;">Your verification code is:</p>
+        <p style="font-size: 1.5rem; font-weight: bold; margin-bottom: 20px;">${code}</p>
+        <button style="padding: 10px 20px; background-color: #4caf50; color: #fff; border: none; border-radius: 5px; cursor: pointer;" onclick="document.body.removeChild(this.parentElement)">OK</button>
+        <button style="padding: 10px 20px; background-color: #2196f3; color: #fff; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px;" onclick="speakOtp('${code}')">🔊 Speak OTP</button>
+    `;
+    document.body.appendChild(popup);
+}
+function speakOtp(otp) {
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(`Your verification code is ${otp}`);
+        window.speechSynthesis.speak(utterance);
+    } else {
+        alert('Speech synthesis is not supported in this browser.');
+    }
+} // Closing the speakOtp function
 function handleRegister(event) {
     event.preventDefault();
     const name = document.getElementById('registerName').value.trim();
@@ -1327,43 +1378,141 @@ function handleRegister(event) {
     const success = document.getElementById('registerMsg');
     error.style.display = success.style.display = 'none';
 
-    if (!name || !phone || !email || !pwd || !confirm || !code) {
-        error.textContent = "Please fill in all fields.";
+    // Helper function for displaying error messages
+    const showError = (message) => {
+        error.textContent = message;
         error.style.display = 'block';
+    };
+
+    // Input validation
+    if (!name || !phone || !email || !pwd || !confirm || !code) {
+        showError("Please fill in all fields.");
+        return;
+    }
+
+    if (!/^[a-zA-Z\s]+$/.test(name)) {
+        showError("Name can only contain letters and spaces.");
+        return;
+    }
+
+    if (!/^\d{10}$/.test(phone)) {
+        showError("Phone number must be 10 digits.");
+        return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showError("Invalid email format.");
+        return;
+    }
+
+    if (pwd.length < 8 || !/[A-Z]/.test(pwd) || !/[a-z]/.test(pwd) || !/[0-9]/.test(pwd) || !/[!@#$%^&*]/.test(pwd)) {
+        showError("Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.");
         return;
     }
 
     if (pwd !== confirm) {
-        error.textContent = "Passwords do not match.";
-        error.style.display = 'block';
+        showError("Passwords do not match.");
         return;
     }
 
     if (code !== storedCode) {
-        error.textContent = "Invalid verification code.";
-        error.style.display = 'block';
+        showError("Invalid verification code.");
         return;
     }
 
     const users = JSON.parse(localStorage.getItem(usersKey)) || [];
     if (users.some(u => u.email === email || u.phone === phone)) {
-        error.textContent = "User already registered.";
-        error.style.display = 'block';
+        showError("User already registered with this email or phone number.");
         return;
     }
 
-    const newUser = { name, phone, email, password: pwd, smsAlerts: false };
+    // Create new user object with advanced features
+    const newUser = {
+        name,
+        phone,
+        email,
+        password: pwd,
+        smsAlerts: false,
+        profilePic: 'https://via.placeholder.com/100',
+        createdAt: new Date().toISOString(),
+        preferences: {
+            darkMode: false,
+            notifications: false,
+            language: 'en',
+            voiceAnnouncements: false,
+            autoRefresh: false,
+            locationTracking: false
+        },
+        activityLog: [],
+        lastLogin: null,
+        securityQuestions: [],
+        favorites: [],
+        recentSearches: []
+    };
+
+    // Log registration activity
+    newUser.activityLog.push({
+        action: "Registration",
+        timestamp: new Date().toLocaleString(),
+        details: "User registered successfully."
+    });
+
+    // Save user to localStorage
     users.push(newUser);
     localStorage.setItem(usersKey, JSON.stringify(users));
 
+    // Display success message
     success.textContent = "Registration successful! Please log in.";
     success.style.display = 'block';
     showAlert("Registration successful!");
 
+    // Clear verification code from localStorage
+    localStorage.removeItem('verificationCode');
+
+    // Automatically log the user in after registration
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('currentUser', JSON.stringify(newUser));
+
+    // Log automatic login activity
+    newUser.activityLog.push({
+        action: "Auto Login",
+        timestamp: new Date().toLocaleString(),
+        details: "User automatically logged in after registration."
+    });
+
+    // Save user preferences and settings
+    localStorage.setItem('userPreferences', JSON.stringify(newUser.preferences));
+
+    // Redirect to the homepage after a short delay
     setTimeout(() => {
-        closePopup('registerModal');
-    }, 2000); // Delay for 2 seconds before closing the modal
+        closePopup('registerModal'); // Close the registration modal
+        setTimeout(() => {
+            window.location.href = 'index.html'; // Redirect to homepage
+        }, 2000); // Delay for 2 seconds before redirecting
+    }, 2000);
 }
+
+function getGravatarUrl(email) {
+  const hash = CryptoJS.MD5(email.trim().toLowerCase()).toString();
+  return `https://www.gravatar.com/avatar/${hash}?s=100&d=identicon`;
+}
+
+function zxcvbnScore(pw) {
+  // quick entropy estimate (0‑4)
+  let score = 0;
+  if (pw.length >= 8) score++;
+  if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++;
+  if (/\d/.test(pw)) score++;
+  if (/[!@#$%^&*]/.test(pw)) score++;
+  return score;
+}
+
+document.getElementById("registerPassword").addEventListener("input", e => {
+  const meter = document.getElementById("pwMeter");
+  const pw = e.target.value;
+  const score = zxcvbnScore(pw);
+  meter.value = score;
+});
 
 function handleLogin(event) {
     event.preventDefault();
@@ -1376,17 +1525,107 @@ function handleLogin(event) {
     const user = users.find(u => (u.email === id || u.phone === id) && u.password === pwd);
 
     if (user) {
+        // Check for account lock due to multiple failed attempts
+        if (user.failedAttempts && user.failedAttempts >= 3) {
+            const lockDuration = 5 * 60 * 1000; // 5 minutes
+            const timeSinceLastAttempt = new Date() - new Date(user.lastFailedAttempt);
+            if (timeSinceLastAttempt < lockDuration) {
+                const remainingTime = Math.ceil((lockDuration - timeSinceLastAttempt) / 1000 / 60);
+                error.textContent = `Account locked. Try again in ${remainingTime} minutes.`;
+                error.style.display = 'block';
+                return;
+            } else {
+                // Reset failed attempts after lock duration
+                user.failedAttempts = 0;
+                delete user.lastFailedAttempt;
+            }
+        }
+
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('currentUser', JSON.stringify(user));
-        showAlert("Login successful!");
+
+        // Log login activity
+        user.activityLog = user.activityLog || [];
+        user.activityLog.push({
+            action: "Login",
+            timestamp: new Date().toLocaleString(),
+            details: "User logged in successfully."
+        });
+        localStorage.setItem(usersKey, JSON.stringify(users));
+
+        // Update last login timestamp
+        user.lastLogin = new Date().toISOString();
+        localStorage.setItem(usersKey, JSON.stringify(users));
+        const loginModal = document.getElementById('loginModal');
+        const welcomeMessage = document.createElement('div');
+        welcomeMessage.style.position = 'fixed';
+        welcomeMessage.style.top = '10px';
+        welcomeMessage.style.left = '50%';
+        welcomeMessage.style.transform = 'translateX(-50%)';
+        welcomeMessage.style.background = '#4caf50';
+        welcomeMessage.style.color = 'white';
+        welcomeMessage.style.padding = '10px 20px';
+        welcomeMessage.style.borderRadius = '5px';
+        welcomeMessage.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
+        welcomeMessage.style.zIndex = '1000';
+        welcomeMessage.style.cursor = 'pointer';
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const userName = currentUser?.name || 'User';
+        welcomeMessage.textContent = `Welcome back, ${userName}!`;
+
+        // Make the message draggable
+        welcomeMessage.onmousedown = function (event) {
+            let shiftX = event.clientX - welcomeMessage.getBoundingClientRect().left;
+            let shiftY = event.clientY - welcomeMessage.getBoundingClientRect().top;
+
+            function moveAt(pageX, pageY) {
+                welcomeMessage.style.left = pageX - shiftX + 'px';
+                welcomeMessage.style.top = pageY - shiftY + 'px';
+            }
+
+            function onMouseMove(event) {
+                moveAt(event.pageX, event.pageY);
+            }
+
+            document.addEventListener('mousemove', onMouseMove);
+
+            welcomeMessage.onmouseup = function () {
+                document.removeEventListener('mousemove', onMouseMove);
+                welcomeMessage.onmouseup = null;
+            };
+        };
+
+        welcomeMessage.ondragstart = function () {
+            return false;
+        };
+
+        loginModal.appendChild(welcomeMessage);
         setTimeout(() => {
             window.location.href = 'index.html';
         }, 2000); // Delay for 2 seconds before redirecting
     } else {
-        error.textContent = "Invalid email or password.";
+        // Handle failed login attempts
+        const failedUser = users.find(u => u.email === id || u.phone === id);
+        if (failedUser) {
+            failedUser.failedAttempts = (failedUser.failedAttempts || 0) + 1;
+            failedUser.lastFailedAttempt = new Date().toISOString();
+            localStorage.setItem(usersKey, JSON.stringify(users));
+
+            if (failedUser.failedAttempts >= 3) {
+                error.textContent = "Account locked due to multiple failed attempts. Try again in 5 minutes.";
+            } else {
+                const remainingAttempts = 3 - failedUser.failedAttempts;
+                error.textContent = `Invalid credentials. You have ${remainingAttempts} attempt(s) left.`;
+            }
+        } else {
+            error.textContent = "Invalid email or password.";
+        }
         error.style.display = 'block';
         showAlert("Login failed. Please check your credentials.");
     }
+
+    // Additional security: Log failed login attempts
+    logEvent(`Login attempt for ID: ${id} ${user ? 'succeeded' : 'failed'}`);
 }
 
 function saveProfile(event) {
@@ -1394,19 +1633,20 @@ function saveProfile(event) {
     const name = document.getElementById('profileName').value.trim();
     const phone = document.getElementById('profilePhone').value.trim();
     const smsAlerts = document.getElementById('smsToggle').checked;
+    const bio = document.getElementById('profileBio').value.trim();
 
     const users = JSON.parse(localStorage.getItem(usersKey)) || [];
     let currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     const updatedUsers = users.map(u => {
         if (u.email === currentUser.email) {
-            return { ...u, name, phone, smsAlerts };
+            return { ...u, name, phone, smsAlerts, bio };
         }
         return u;
     });
 
     localStorage.setItem(usersKey, JSON.stringify(updatedUsers));
-    currentUser = { ...currentUser, name, phone, smsAlerts };
+    currentUser = { ...currentUser, name, phone, smsAlerts, bio };
     localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
     const msg = document.getElementById('profileMsg');
@@ -1415,6 +1655,42 @@ function saveProfile(event) {
         msg.style.display = 'none';
         closePopup('profileModal');
     }, 1500);
+
+    // Update profile picture in the navbar and dropdown
+    const profileImage = document.getElementById('profileImage');
+    const dropdownProfileImage = document.getElementById('dropdownProfileImage');
+    profileImage.src = currentUser.profilePic || 'https://via.placeholder.com/60';
+    dropdownProfileImage.src = currentUser.profilePic || 'https://via.placeholder.com/100';
+
+    // Update name in the dropdown
+    const dropdownName = document.querySelector('.dropdown-name');
+    if (dropdownName) {
+        dropdownName.textContent = `👤 ${currentUser.name || 'User'}`;
+    }
+
+    // Update email in the dropdown
+    const dropdownEmail = document.querySelector('.dropdown-email');
+    if (dropdownEmail) {
+        dropdownEmail.textContent = `📧 ${currentUser.email || 'N/A'}`;
+    }
+
+    // Log profile update activity
+    currentUser.activityLog = currentUser.activityLog || [];
+    currentUser.activityLog.push({
+        action: "Profile Update",
+        timestamp: new Date().toLocaleString(),
+        details: "User updated their profile information."
+    });
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+    // Update bio in the profile modal
+    const profileBio = document.getElementById('profileBio');
+    if (profileBio) {
+        profileBio.value = currentUser.bio || '';
+    }
+
+    // Notify user of successful update
+    alert("Profile updated successfully!");
 }
 
 // Function to open modals
@@ -1458,7 +1734,6 @@ function showAlert(message) {
     alert(message);
 }
 
-
 function logout() {
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('currentUser');
@@ -1466,6 +1741,44 @@ function logout() {
     setTimeout(() => {
         window.location.href = 'index.html';
     }, 2000); // Delay for 2 seconds before redirecting
+    localStorage.removeItem('currentUser');
+    showAlert("Logged out!");
+    setTimeout(() => {
+        window.location.href = 'index.html';
+    }, 2000); // Delay for 2 seconds before redirecting
+}
+
+function clearUserData() {
+    localStorage.removeItem('registeredUsers');
+    localStorage.removeItem('userPreferences');
+    localStorage.removeItem('eventLog');
+    localStorage.removeItem('busTrackerHistory');
+    localStorage.removeItem('verificationCode');
+    localStorage.removeItem('currentUser');
+    showAlert("All user data cleared!");
+}
+
+function resetApp() {
+    clearUserData();
+    localStorage.clear();
+    showAlert("Application reset to default settings!");
+    setTimeout(() => {
+    }, 2000); // Delay for 2 seconds before redirecting
+}
+
+function clearFeedbackHistory() {
+    localStorage.removeItem('userFeedback');
+    showAlert("Feedback history cleared!");
+}
+
+function clearSimulationData() {
+    simulationData = [];
+    if (simulationInterval) {
+        clearInterval(simulationInterval);
+        simulationInterval = null;
+    }
+    loadBuses(busData); // Reset to initial bus data
+    showAlert("Simulation data cleared!");
 }
 
 

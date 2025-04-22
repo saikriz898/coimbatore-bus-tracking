@@ -258,23 +258,6 @@ input[type="checkbox"]:checked::after {
     left: 50%;
     transform: translate(-50%, -50%);
 }
-
-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: bold;
-    color: #fff;
-    background: var(--vibrant-gradient);
-    box-shadow: var(--neon-glow);
-    transition: background var(--transition-speed), transform var(--transition-speed);
-}
-
-button:hover {
-    background: var(--vibrant-hover);
-    transform: translateY(-2px);
-}
   /* === General Modal Styles === */
   .modal {
     position: fixed;
@@ -308,25 +291,7 @@ button:hover {
   }
   
   /* === Buttons === */
-  .modal-button,
-  .link-button {
-    width: 100%;
-    background: var(--accent-color);
-    color: var(--bg-color);
-    padding: 0.75rem 1rem;
-    border: none;
-    border-radius: var(--border-radius);
-    font-weight: 600;
-    margin-top: 1rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  .modal-button:hover,
-  .link-button:hover {
-    background: var(--accent-hover);
-  }
-  
+
   /* === Input Fields === */
   .input-field {
     width: 100%;
@@ -380,18 +345,60 @@ button:hover {
     text-align: center;
   }
   
-  .modal-footer .link-button {
+  .modal-footer {
     background: none;
-    color: var(--accent-color);
     padding: 0;
     font-weight: 600;
+  }
+  
+  /* ============================= */
+  /*         Link Button           */
+  /* ============================= */
+  .link-button {
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    background: transparent;
+    text-decoration: none;
+    border: none;
     text-decoration: underline;
+    transition: background var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
+    cursor: pointer;
   }
-  
-  .modal-footer .link-button:hover {
-    color: var(--accent-hover);
+  .modal-button {
+    display: inline-block;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 10px 0;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed), background 0.3s ease;
+    cursor: pointer;
   }
-  
+
+  .modal-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px var(--accent-color);
+    background: var(--vibrant-hover);
+  }
+
+  .modal-button:active {
+    transform: scale(0.98);
+    box-shadow: 0 0 10px var(--primary-color);
+  }
+
+  .modal-button:disabled {
+    background: #555;
+    color: #aaa;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
   /* === Messages === */
   .error-message {
     color: var(--error-color);
@@ -524,26 +531,6 @@ select:focus {
   border-color: var(--primary);
   box-shadow: 0 0 8px var(--primary);
 }
-
-button[type="submit"],
-.reset-btn,
-.modal button {
-  background: var(--primary);
-  color: #000;
-  font-weight: bold;
-  padding: 10px 20px;
-  border-radius: var(--radius);
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: var(--shadow-neon);
-  font-size: 1rem;
-}
-button:hover {
-  transform: scale(1.05);
-  background: #00e6e6;
-}
-
 ul {
   padding-left: 1.2rem;
   list-style-type: disc;
